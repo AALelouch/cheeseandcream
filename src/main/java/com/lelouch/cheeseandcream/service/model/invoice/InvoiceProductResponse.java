@@ -1,4 +1,4 @@
-package com.lelouch.cheeseandcream.service.model;
+package com.lelouch.cheeseandcream.service.model.invoice;
 
 import lombok.Builder;
 

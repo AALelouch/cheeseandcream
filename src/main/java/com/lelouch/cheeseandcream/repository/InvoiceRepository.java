@@ -1,6 +1,7 @@
 package com.lelouch.cheeseandcream.repository;
 
 import com.lelouch.cheeseandcream.entity.Invoice;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,5 +30,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
             "WHERE i.agent.id = :agentId")
     List<Invoice> findAllByAgentIdWithDetails(@Param("agentId") Long agentId);
 
-
+    List<Invoice> findByModifiedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

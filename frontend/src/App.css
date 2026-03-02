@@ -1,0 +1,167 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  color: #f5d742;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: #16213e;
+  color: #f5d742;
+}
+
+.main-content {
+  padding: 1rem;
+}
+
+.card {
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card h2 {
+  color: #f5d742;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #f5d742;
+  color: #1a1a2e;
+}
+
+.btn-primary:hover {
+  background-color: #e6c832;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.table th {
+  background-color: #16213e;
+  color: #f5d742;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #f5d742;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #16213e;
+  color: white;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #f5d742;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  text-align: center;
+}
+
+.stat-card .stat-value {
+  font-size: 2.5rem;
+  color: #f5d742;
+  font-weight: bold;
+}
+
+.stat-card .stat-label {
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+.error {
+  color: #dc3545;
+  padding: 1rem;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+

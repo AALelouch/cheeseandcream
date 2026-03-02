@@ -4,8 +4,8 @@ import com.lelouch.cheeseandcream.entity.Invoice;
 import com.lelouch.cheeseandcream.exception.NotFoundException;
 import com.lelouch.cheeseandcream.repository.InvoiceRepository;
 import com.lelouch.cheeseandcream.service.InvoiceQueryService;
-import com.lelouch.cheeseandcream.service.model.InvoiceProductResponse;
-import com.lelouch.cheeseandcream.service.model.InvoiceResponse;
+import com.lelouch.cheeseandcream.service.model.invoice.InvoiceProductResponse;
+import com.lelouch.cheeseandcream.service.model.invoice.InvoiceResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +44,17 @@ public class InvoiceQueryServiceImpl implements InvoiceQueryService {
                 .map(ip -> new InvoiceProductResponse(ip.getId(), ip.getProduct().getName(), ip.getQuantity(), ip.getTotalPrice(),
                         ip.getProduct().getPrice())).toList();
 
-        return new InvoiceResponse(invoice.getId(), invoice.getDate().toString(), invoice.getInvoiceType(), invoice.getAgent().getId(),
-                invoice.getAgent().getName(), invoice.getTotalAmount(), invoice.getBalance(), products);
+        return new InvoiceResponse(
+                invoice.getId(),
+                invoice.getInvoiceType(),
+                invoice.getAgent().getId(),
+                invoice.getAgent().getName(),
+                invoice.getTotalAmount(),
+                invoice.getTotalProfit(),
+                invoice.getBalance(),
+                invoice.getCreationDate(),
+                invoice.getModifiedDate(),
+                products
+        );
     }
 }

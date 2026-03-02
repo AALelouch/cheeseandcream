@@ -1,4 +1,4 @@
-package com.lelouch.cheeseandcream.service.model;
+package com.lelouch.cheeseandcream.service.model.product;
 
 public record ProductResponse(
         Long id,

@@ -9,10 +9,9 @@ import com.lelouch.cheeseandcream.repository.AgentRepository;
 import com.lelouch.cheeseandcream.repository.InvoiceRepository;
 import com.lelouch.cheeseandcream.repository.ProductRepository;
 import com.lelouch.cheeseandcream.service.InvoiceCreationService;
-import com.lelouch.cheeseandcream.service.model.InvoiceProductRequest;
-import com.lelouch.cheeseandcream.service.model.InvoiceRequest;
+import com.lelouch.cheeseandcream.service.model.invoice.InvoiceProductRequest;
+import com.lelouch.cheeseandcream.service.model.invoice.InvoiceRequest;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +71,7 @@ public class InvoiceCreationServiceImpl implements InvoiceCreationService {
                     .product(product)
                     .quantity(productRequest.quantity())
                     .totalPrice(productRequest.quantity() * product.getPrice())
+                    .totalProfit(productRequest.quantity() * (product.getPrice() - product.getCost()))
                     .build();
 
 
@@ -88,12 +88,16 @@ public class InvoiceCreationServiceImpl implements InvoiceCreationService {
                 .mapToDouble(InvoiceProduct::getTotalPrice)
                 .sum();
 
+        double totalProfit = invoiceProducts.stream()
+                .mapToDouble(InvoiceProduct::getTotalProfit)
+                .sum();
+
         Invoice invoice = Invoice.builder()
                 .invoiceType(invoiceData.invoiceType())
                 .agent(agent)
-                .date(LocalDateTime.now())
                 .totalAmount(totalAmount)
                 .balance(invoiceData.hasBalance() ? invoiceData.balanceAmount() : 0.0)
+                .totalProfit(totalProfit)
                 .build();
 
         invoiceProducts.forEach(ip -> ip.setInvoice(invoice));

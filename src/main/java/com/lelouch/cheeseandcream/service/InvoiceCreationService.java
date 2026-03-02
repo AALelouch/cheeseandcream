@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.service;
 
-import com.lelouch.cheeseandcream.service.model.InvoiceRequest;
+import com.lelouch.cheeseandcream.service.model.invoice.InvoiceRequest;
 
 public interface InvoiceCreationService {
 

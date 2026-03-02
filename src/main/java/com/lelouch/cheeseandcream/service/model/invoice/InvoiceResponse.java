@@ -1,17 +1,20 @@
-package com.lelouch.cheeseandcream.service.model;
+package com.lelouch.cheeseandcream.service.model.invoice;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
 @Builder
 public record InvoiceResponse(
         Long id,
-        String date,
         String invoiceType,
         Long agentId,
         String agentName,
         Double totalAmount,
+        Double totalProfit,
         Double balance,
+        LocalDateTime creationDate,
+        LocalDateTime modifiedDate,
         List<InvoiceProductResponse> products
 ) {
 }

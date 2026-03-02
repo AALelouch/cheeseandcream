@@ -5,8 +5,8 @@ import com.lelouch.cheeseandcream.entity.Agent;
 import com.lelouch.cheeseandcream.repository.AgentRepository;
 import com.lelouch.cheeseandcream.service.AgentCrudService;
 import com.lelouch.cheeseandcream.service.mapper.AgentMapper;
-import com.lelouch.cheeseandcream.service.model.AgentRequest;
-import com.lelouch.cheeseandcream.service.model.AgentResponse;
+import com.lelouch.cheeseandcream.service.model.agent.AgentRequest;
+import com.lelouch.cheeseandcream.service.model.agent.AgentResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

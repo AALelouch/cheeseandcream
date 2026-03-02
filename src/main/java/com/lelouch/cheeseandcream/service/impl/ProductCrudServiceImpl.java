@@ -5,8 +5,8 @@ import com.lelouch.cheeseandcream.exception.NotFoundException;
 import com.lelouch.cheeseandcream.repository.ProductRepository;
 import com.lelouch.cheeseandcream.service.ProductCrudService;
 import com.lelouch.cheeseandcream.service.mapper.ProductMapper;
-import com.lelouch.cheeseandcream.service.model.ProductRequest;
-import com.lelouch.cheeseandcream.service.model.ProductResponse;
+import com.lelouch.cheeseandcream.service.model.product.ProductRequest;
+import com.lelouch.cheeseandcream.service.model.product.ProductResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

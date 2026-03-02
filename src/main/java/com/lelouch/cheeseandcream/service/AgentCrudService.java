@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.service;
 
-import com.lelouch.cheeseandcream.service.model.AgentRequest;
-import com.lelouch.cheeseandcream.service.model.AgentResponse;
+import com.lelouch.cheeseandcream.service.model.agent.AgentRequest;
+import com.lelouch.cheeseandcream.service.model.agent.AgentResponse;
 import java.util.List;
 
 public interface AgentCrudService {

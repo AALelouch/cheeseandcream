@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.service.mapper;
 
 import com.lelouch.cheeseandcream.entity.Product;
-import com.lelouch.cheeseandcream.service.model.ProductRequest;
-import com.lelouch.cheeseandcream.service.model.ProductResponse;
+import com.lelouch.cheeseandcream.service.model.product.ProductRequest;
+import com.lelouch.cheeseandcream.service.model.product.ProductResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

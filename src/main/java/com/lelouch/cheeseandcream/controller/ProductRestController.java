@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.controller;
 
 import com.lelouch.cheeseandcream.service.ProductCrudService;
-import com.lelouch.cheeseandcream.service.model.ProductRequest;
-import com.lelouch.cheeseandcream.service.model.ProductResponse;
+import com.lelouch.cheeseandcream.service.model.product.ProductRequest;
+import com.lelouch.cheeseandcream.service.model.product.ProductResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
