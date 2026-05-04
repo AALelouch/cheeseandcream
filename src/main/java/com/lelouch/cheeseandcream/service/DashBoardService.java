@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.service;
 
-import com.lelouch.cheeseandcream.service.model.dashboard.DashboardTimeRequest;
+import com.lelouch.cheeseandcream.model.dashboard.DashboardTimeRequest;
 
 public interface DashBoardService {
 

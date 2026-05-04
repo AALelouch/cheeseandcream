@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.repository;
 
-import com.lelouch.cheeseandcream.entity.Agent;
+import com.lelouch.cheeseandcream.entity.agent.Agent;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

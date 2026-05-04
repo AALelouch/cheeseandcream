@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.service;
 
-import com.lelouch.cheeseandcream.service.model.invoice.InvoiceResponse;
+import com.lelouch.cheeseandcream.model.invoice.InvoiceResponse;
 import java.util.List;
 
 public interface InvoiceQueryService {

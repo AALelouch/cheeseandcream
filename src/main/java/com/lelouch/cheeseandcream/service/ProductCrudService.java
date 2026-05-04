@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.service;
 
-import com.lelouch.cheeseandcream.service.model.product.ProductRequest;
-import com.lelouch.cheeseandcream.service.model.product.ProductResponse;
+import com.lelouch.cheeseandcream.model.product.ProductRequest;
+import com.lelouch.cheeseandcream.model.product.ProductResponse;
 import java.util.List;
 
 public interface ProductCrudService {

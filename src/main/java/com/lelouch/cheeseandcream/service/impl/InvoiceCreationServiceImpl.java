@@ -1,16 +1,16 @@
 package com.lelouch.cheeseandcream.service.impl;
 
-import com.lelouch.cheeseandcream.entity.Agent;
-import com.lelouch.cheeseandcream.entity.Invoice;
-import com.lelouch.cheeseandcream.entity.InvoiceProduct;
-import com.lelouch.cheeseandcream.entity.Product;
+import com.lelouch.cheeseandcream.entity.agent.Agent;
+import com.lelouch.cheeseandcream.entity.invoice.Invoice;
+import com.lelouch.cheeseandcream.entity.invoice.InvoiceProduct;
+import com.lelouch.cheeseandcream.entity.product.Product;
 import com.lelouch.cheeseandcream.exception.BadRequestException;
 import com.lelouch.cheeseandcream.repository.AgentRepository;
 import com.lelouch.cheeseandcream.repository.InvoiceRepository;
 import com.lelouch.cheeseandcream.repository.ProductRepository;
 import com.lelouch.cheeseandcream.service.InvoiceCreationService;
-import com.lelouch.cheeseandcream.service.model.invoice.InvoiceProductRequest;
-import com.lelouch.cheeseandcream.service.model.invoice.InvoiceRequest;
+import com.lelouch.cheeseandcream.model.invoice.InvoiceProductRequest;
+import com.lelouch.cheeseandcream.model.invoice.InvoiceRequest;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

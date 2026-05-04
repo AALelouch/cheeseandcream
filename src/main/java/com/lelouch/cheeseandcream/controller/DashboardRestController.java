@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.controller;
 
 import com.lelouch.cheeseandcream.service.DashBoardService;
-import com.lelouch.cheeseandcream.service.model.dashboard.DashboardResponse;
-import com.lelouch.cheeseandcream.service.model.dashboard.DashboardTimeRequest;
+import com.lelouch.cheeseandcream.model.dashboard.DashboardResponse;
+import com.lelouch.cheeseandcream.model.dashboard.DashboardTimeRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

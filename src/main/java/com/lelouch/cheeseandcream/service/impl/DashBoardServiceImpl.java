@@ -3,7 +3,7 @@ package com.lelouch.cheeseandcream.service.impl;
 import com.lelouch.cheeseandcream.repository.AgentRepository;
 import com.lelouch.cheeseandcream.repository.InvoiceRepository;
 import com.lelouch.cheeseandcream.service.DashBoardService;
-import com.lelouch.cheeseandcream.service.model.dashboard.DashboardTimeRequest;
+import com.lelouch.cheeseandcream.model.dashboard.DashboardTimeRequest;
 import org.springframework.stereotype.Service;
 
 @Service
