@@ -7,5 +7,6 @@ public record ProductResponse(
         Double price,
         Double cost,
         String unitType,
-        String categoryName
+        String categoryName,
+        String agentName
 ) {}

@@ -1,8 +1,10 @@
 package com.lelouch.cheeseandcream.service.impl;
 
+import com.lelouch.cheeseandcream.entity.agent.Agent;
 import com.lelouch.cheeseandcream.entity.product.Category;
 import com.lelouch.cheeseandcream.entity.product.Product;
 import com.lelouch.cheeseandcream.exception.NotFoundException;
+import com.lelouch.cheeseandcream.repository.AgentRepository;
 import com.lelouch.cheeseandcream.repository.CategoryRepository;
 import com.lelouch.cheeseandcream.repository.ProductRepository;
 import com.lelouch.cheeseandcream.service.ProductCrudService;
@@ -18,20 +20,25 @@ public class ProductCrudServiceImpl implements ProductCrudService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final AgentRepository agentRepository;
 
     public ProductCrudServiceImpl(ProductMapper productMapper, ProductRepository productRepository, CategoryRepository categoryRepository,
-            CategoryRepository categoryRepository1) {
+            CategoryRepository categoryRepository1, AgentRepository agentRepository) {
         this.productMapper = productMapper;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository1;
+        this.agentRepository = agentRepository;
     }
 
     @Override
     public void createProduct(ProductRequest productData) {
         Category category = categoryRepository.findById(productData.categoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
+        Agent agent = agentRepository.findById(productData.agendId())
+                .orElseThrow(() -> new NotFoundException("Agent not found"));
         Product product = productMapper.toEntity(productData);
         product.setCategory(category);
+        product.setAgent(agent);
         productRepository.save(product);
     }
 
@@ -46,10 +53,12 @@ public class ProductCrudServiceImpl implements ProductCrudService {
     public void updateProduct(Long productId, ProductRequest productData) {
         Category category = categoryRepository.findById(productData.categoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
-
+        Agent agent = agentRepository.findById(productData.agendId())
+                .orElseThrow(() -> new NotFoundException("Agent not found"));
         Product product = productMapper.toEntity(productData);
         product.setId(productId);
         product.setCategory(category);
+        product.setAgent(agent);
         productRepository.save(product);
     }
 

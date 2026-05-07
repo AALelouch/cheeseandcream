@@ -1,4 +1,4 @@
-package com.lelouch.cheeseandcream.entity.invoice;
+package com.lelouch.cheeseandcream.entity.financial.operation;
 
 import com.lelouch.cheeseandcream.entity.product.Product;
 import jakarta.persistence.CascadeType;
@@ -16,32 +16,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "invoice_product")
+@Table(name = "operation_product")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InvoiceProduct {
+public class OperationProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantity;
-    private Double totalPrice;
+    private Double quantity = 0.0;
+    private Double totalPrice= 0.0;
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_id", nullable = false)
-    private Invoice invoice;
+    @JoinColumn(name = "operation_id", nullable = false)
+    private FinancialOperation financialOperation;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
-    @Transient
-    private Double totalProfit;
 
 }
 

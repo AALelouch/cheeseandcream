@@ -1,8 +1,7 @@
-package com.lelouch.cheeseandcream.entity.invoice;
+package com.lelouch.cheeseandcream.entity.financial.operation;
 
 import com.lelouch.cheeseandcream.entity.agent.Agent;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,38 +15,48 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "invoice")
+@Table(name = "financial_operation")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Invoice {
+public class FinancialOperation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String invoiceType;
-    private Double balance;
 
     @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
 
-    @OneToMany(mappedBy = "invoice", fetch = jakarta.persistence.FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<InvoiceProduct> products;
+    @OneToMany(mappedBy = "financialOperation", fetch = jakarta.persistence.FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OperationProduct> products;
 
-    private Double totalAmount;
-    private Double totalProfit;
+    private Double amount = 0.0;
+    private Double total = 0.0;
+    private String concept;
+    private OperationType operationType;
 
-    @Column(updatable = false)
+
     private LocalDateTime creationDate;
-
     private LocalDateTime modifiedDate;
+
+    public enum OperationType {
+        SALE, PURCHASE;
+
+        public static OperationType fromString(String value) {
+            for (OperationType type : OperationType.values()) {
+                if (type.name().equalsIgnoreCase(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant " + OperationType.class.getCanonicalName() + "." + value);
+        }
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -59,4 +68,5 @@ public class Invoice {
     protected void onUpdate() {
         this.modifiedDate = LocalDateTime.now();
     }
+
 }

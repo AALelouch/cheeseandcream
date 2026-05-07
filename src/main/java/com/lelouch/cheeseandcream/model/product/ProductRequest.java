@@ -6,5 +6,6 @@ public record ProductRequest(
         Double price,
         Double cost,
         String unitType,
-        Long categoryId
+        Long categoryId,
+        Long agendId
 ) {}
