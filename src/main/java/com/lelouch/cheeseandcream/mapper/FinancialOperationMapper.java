@@ -5,7 +5,6 @@ import com.lelouch.cheeseandcream.entity.financial.operation.OperationProduct;
 import com.lelouch.cheeseandcream.model.operation.FinancialOperationResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
