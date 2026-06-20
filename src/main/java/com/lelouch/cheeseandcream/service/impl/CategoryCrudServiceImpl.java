@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.service.impl;
 
+import com.lelouch.cheeseandcream.ValidatorUtils;
 import com.lelouch.cheeseandcream.entity.product.Category;
 import com.lelouch.cheeseandcream.exception.NotFoundException;
 import com.lelouch.cheeseandcream.mapper.CategoryMapper;
@@ -22,23 +23,25 @@ public class CategoryCrudServiceImpl implements CategoryCrudService {
 
     @Override
     public void createCategory(String name) {
-            Category category = new Category();
-            category.setName(name);
-            categoryRepository.save(category);
+        ValidatorUtils.validateData(() -> categoryRepository.existsByNameAndActiveIsTrue(name), "Category with the same name already exists");
+        Category category = new Category();
+        category.setName(name);
+        categoryRepository.save(category);
     }
 
     @Override
     public CategoryResponse getCategoryById(Long id) {
-        return categoryMapper.toResponse(categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found")));
+        return categoryMapper.toResponse(categoryRepository.findByIdAndActiveIsTrue(id).orElseThrow(() -> new NotFoundException("Category not found")));
     }
 
     @Override
     public List<CategoryResponse> getAllCategories() {
-        return categoryRepository.findAll().stream().map(categoryMapper::toResponse).toList();
+        return categoryRepository.findAllByActiveIsTrue().stream().map(categoryMapper::toResponse).toList();
     }
 
     @Override
     public void updateCategory(Long id, String name) {
+        ValidatorUtils.validateData(() -> categoryRepository.existsByNameAndActiveIsTrueAndIdNot(name, id), "Category with the same name already exists");
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found"));
         category.setName(name);
         categoryRepository.save(category);
@@ -46,9 +49,10 @@ public class CategoryCrudServiceImpl implements CategoryCrudService {
 
     @Override
     public void deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new NotFoundException("Category not found");
-        }
-        categoryRepository.deleteById(id);
+
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found"));
+        category.setActive(false);
+        categoryRepository.save(category);
+
     }
 }

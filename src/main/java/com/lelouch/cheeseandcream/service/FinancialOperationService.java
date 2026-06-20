@@ -8,7 +8,6 @@ public interface FinancialOperationService {
 
     void addOperation(FinancialOperationRequest financialOperationRequest);
     List<FinancialOperationResponse> getOperationsByAgentId(Long idAgent);
-    List<FinancialOperationResponse> getAll();
 
 
 }

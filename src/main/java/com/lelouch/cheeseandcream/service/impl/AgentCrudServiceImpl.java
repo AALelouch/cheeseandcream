@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.service.impl;
 
+import com.lelouch.cheeseandcream.ValidatorUtils;
 import com.lelouch.cheeseandcream.entity.agent.IdentificationType;
 import com.lelouch.cheeseandcream.exception.NotFoundException;
 import com.lelouch.cheeseandcream.entity.agent.Agent;
@@ -28,6 +29,10 @@ public class AgentCrudServiceImpl implements AgentCrudService {
 
     @Override
     public void createAgent(AgentRequest agentData) {
+
+        ValidatorUtils.validateData(() -> agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumber(agentData.name(), agentData.email(),
+                agentData.address(), agentData.identificationNumber()), "Agent with the same name, email, address or identification number already exists");
+
         Agent agent = agentMapper.toEntity(agentData);
         IdentificationType identificationType = identificationTypeRepository.findById(agentData.identificationTypeId())
                 .orElseThrow(() -> new NotFoundException("Identification type not found"));
@@ -38,6 +43,10 @@ public class AgentCrudServiceImpl implements AgentCrudService {
 
     @Override
     public void updateAgent(Long agentId, AgentRequest agentData) {
+
+        ValidatorUtils.validateData(() -> agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumberAndIdNot(agentData.name(), agentData.email(),
+                agentData.address(), agentData.identificationNumber(), agentId), "Agent with the same name, email, address or identification number already exists");
+
         Agent agent = agentMapper.toEntity(agentData);
         IdentificationType identificationType = identificationTypeRepository.findById(agentData.identificationTypeId())
                 .orElseThrow(() -> new NotFoundException("Identification type not found"));
@@ -49,19 +58,21 @@ public class AgentCrudServiceImpl implements AgentCrudService {
 
     @Override
     public void deleteAgent(Long agentId) {
-        agentRepository.deleteById(agentId);
+        Agent agent = agentRepository.findByIdAndActiveIsTrue(agentId).orElseThrow(() -> new NotFoundException("Agent not found"));
+        agent.setActive(false);
+        agentRepository.save(agent);
     }
 
     @Override
     public AgentResponse getAgent(Long agentId) {
-        return agentRepository.findById(agentId)
+        return agentRepository.findByIdAndActiveIsTrue(agentId)
                 .map(agentMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Agent not found"));
     }
 
     @Override
     public List<AgentResponse> getAllAgents() {
-        return agentRepository.findAll().stream()
+        return agentRepository.findAllByActiveIsTrue().stream()
                 .map(agentMapper::toResponse)
                 .toList();
     }

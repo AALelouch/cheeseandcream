@@ -32,11 +32,13 @@ public class Product {
     @Version
     private Long version;
 
+    @Column(unique = true)
     private String name;
     private Double quantity = 0.0;
     private Double price = 0.0;
     private Double cost = 0.0;
     private String unitType;
+    private boolean active = true;
 
     @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "agent_id", nullable = false)
@@ -49,7 +51,6 @@ public class Product {
 
     @Column(updatable = false)
     private LocalDateTime creationDate;
-
     private LocalDateTime modifiedDate;
  
     @PrePersist

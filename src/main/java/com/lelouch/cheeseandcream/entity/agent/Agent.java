@@ -27,12 +27,18 @@ public class Agent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String phoneNumber;
+    @Column(unique = true)
     private String address;
     private Double balance = 0.0;
+    @Column(unique = true)
     private String identificationNumber;
+    private boolean active = true;
 
     @Column(updatable = false)
     private LocalDateTime creationDate;
@@ -47,6 +53,7 @@ public class Agent {
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.modifiedDate = LocalDateTime.now();
+        this.active = true;
     }
 
     @PreUpdate

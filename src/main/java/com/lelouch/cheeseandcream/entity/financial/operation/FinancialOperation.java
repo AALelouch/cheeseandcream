@@ -3,6 +3,8 @@ package com.lelouch.cheeseandcream.entity.financial.operation;
 import com.lelouch.cheeseandcream.entity.agent.Agent;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,14 +41,16 @@ public class FinancialOperation {
     private Double amount = 0.0;
     private Double total = 0.0;
     private String concept;
+    @Enumerated(EnumType.STRING)
     private OperationType operationType;
+    private boolean active = true;
 
 
     private LocalDateTime creationDate;
     private LocalDateTime modifiedDate;
 
     public enum OperationType {
-        SALE, PURCHASE;
+        SALE, PURCHASE, PAYMENT;
 
         public static OperationType fromString(String value) {
             for (OperationType type : OperationType.values()) {

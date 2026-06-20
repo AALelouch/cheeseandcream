@@ -38,7 +38,8 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
     @Transactional
     public void addOperation(FinancialOperationRequest financialOperationRequest) {
 
-        Agent agent = agentRepository.findById(financialOperationRequest.getIdAgent())
+
+        Agent agent = agentRepository.findByIdAndActiveIsTrue(financialOperationRequest.getIdAgent())
                 .orElseThrow(() -> new NotFoundException("Agent not found with id: " + financialOperationRequest.getIdAgent()));
 
         FinancialOperation financialOperation = new FinancialOperation();
@@ -75,11 +76,9 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
 
         if (financialOperationRequest.getAmount() != null && financialOperationRequest.getAmount() > 0) {
             switch (operationType) {
-                case SALE -> agent.setBalance(agent.getBalance() - financialOperationRequest.getAmount());
+                case SALE, PAYMENT -> agent.setBalance(agent.getBalance() - financialOperationRequest.getAmount());
                 case PURCHASE -> agent.setBalance(agent.getBalance() + financialOperationRequest.getAmount());
-                default -> {
-                    throw new BadRequestException("Invalid operation type: " + operationType);
-                }
+                default -> throw new BadRequestException("Invalid operation type: " + operationType);
             }
         }
 
@@ -89,17 +88,13 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
     private void performProductBasedOperation(FinancialOperation financialOperation, Agent agent, FinancialOperationRequest financialOperationRequest){
 
         List<Long> productIds = financialOperationRequest.getProducts().keySet().stream().toList();
-        List<Product> products = productRepository.findAllById(productIds);
+        List<Product> products = productRepository.findAllByActiveIsTrue(productIds);
 
         if (products.size() != productIds.size()) {
             throw new BadRequestException("Some products not found with ids: " + productIds);
         }
 
         FinancialOperationRequest.OperationType operationType = financialOperationRequest.getOperationType();
-        if (operationType != FinancialOperationRequest.OperationType.PURCHASE
-                && operationType != FinancialOperationRequest.OperationType.SALE) {
-            throw new BadRequestException("Invalid operation type: " + operationType);
-        }
 
         List<OperationProduct> operationProducts = new LinkedList<>();
 
@@ -128,7 +123,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
 
         switch (operationType) {
             case PURCHASE -> agent.setBalance(agent.getBalance() + total);
-            case SALE -> agent.setBalance(agent.getBalance() - total);
+            case SALE, PAYMENT -> agent.setBalance(agent.getBalance() - total);
             default -> throw new BadRequestException("Invalid operation type: " + operationType);
         }
 
@@ -140,14 +135,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
 
     @Override
     public List<FinancialOperationResponse> getOperationsByAgentId(Long idAgent) {
-        return financialOperationRepository.findAllByAgentId(idAgent).stream()
-                .map(financialOperationMapper::toResponse)
-                .toList();
-    }
-
-    @Override
-    public List<FinancialOperationResponse> getAll() {
-        return financialOperationRepository.findAll().stream()
+        return financialOperationRepository.findAllByAgentIdAndActiveIsTrue(idAgent).stream()
                 .map(financialOperationMapper::toResponse)
                 .toList();
     }

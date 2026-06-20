@@ -17,7 +17,7 @@ public class FinancialOperationRequest {
     private OperationType operationType;
 
     public enum OperationType {
-        SALE, PURCHASE
+        SALE, PURCHASE, PAYMENT
     }
 
 }

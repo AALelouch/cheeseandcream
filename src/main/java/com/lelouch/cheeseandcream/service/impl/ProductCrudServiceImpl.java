@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.service.impl;
 
+import com.lelouch.cheeseandcream.ValidatorUtils;
 import com.lelouch.cheeseandcream.entity.agent.Agent;
 import com.lelouch.cheeseandcream.entity.product.Category;
 import com.lelouch.cheeseandcream.entity.product.Product;
@@ -32,6 +33,8 @@ public class ProductCrudServiceImpl implements ProductCrudService {
 
     @Override
     public void createProduct(ProductRequest productData) {
+        ValidatorUtils.validateData(()-> productRepository.existsByNameAndActiveIsTrueAndAgentId(productData.name(), productData.agendId()), "Product with the same name already exists");
+
         Category category = categoryRepository.findById(productData.categoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         Agent agent = agentRepository.findById(productData.agendId())
@@ -44,13 +47,15 @@ public class ProductCrudServiceImpl implements ProductCrudService {
 
     @Override
     public ProductResponse getProductById(Long productId) {
-        return productRepository.findById(productId)
+        return productRepository.findByIdAndActiveIsTrue(productId)
                 .map(productMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
     }
 
     @Override
     public void updateProduct(Long productId, ProductRequest productData) {
+        ValidatorUtils.validateData(()-> productRepository.existsByNameAndActiveIsTrueAndIdNotAndAgentId(productData.name(), productId, productData.agendId()), "Product with the same name already exists");
+
         Category category = categoryRepository.findById(productData.categoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         Agent agent = agentRepository.findById(productData.agendId())
@@ -63,14 +68,14 @@ public class ProductCrudServiceImpl implements ProductCrudService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(productMapper::toResponse)
-                .toList();
+    public List<ProductResponse> getProductsByAgentId(Long agentId) {
+        return productRepository.findByAgentIdAndActiveIsTrue(agentId).stream().map(productMapper::toResponse).toList();
     }
 
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+        Product product = productRepository.findByIdAndActiveIsTrue(productId).orElseThrow(() -> new NotFoundException("Product not found"));
+        product.setActive(false);
+        productRepository.save(product);
     }
 }

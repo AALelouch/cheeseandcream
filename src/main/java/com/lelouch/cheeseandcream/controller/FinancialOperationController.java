@@ -33,9 +33,4 @@ public class FinancialOperationController {
         return ResponseEntity.ok(financialOperationService.getOperationsByAgentId(idAgent));
     }
 
-    @GetMapping
-    public ResponseEntity<List<FinancialOperationResponse>> getAll() {
-        return ResponseEntity.ok(financialOperationService.getAll());
-    }
-
 }

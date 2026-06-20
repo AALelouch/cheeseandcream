@@ -40,35 +40,5 @@ public class DashboardRestController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @GetMapping("/total-debt")
-    public ResponseEntity<Double> getTotalDebt() {
-        return new ResponseEntity<>(dashBoardService.getTotalDebt(), HttpStatus.OK);
-    }
-
-    @PostMapping("/total-debt/by-date-range")
-    public ResponseEntity<Double> getTotalDebtByDateRange(@RequestBody DashboardTimeRequest request) {
-        return new ResponseEntity<>(dashBoardService.getTotalDebtByTimeRange(request), HttpStatus.OK);
-    }
-
-    @GetMapping("/total-revenue")
-    public ResponseEntity<Double> getTotalRevenue() {
-        return new ResponseEntity<>(dashBoardService.getTotalRevenue(), HttpStatus.OK);
-    }
-
-    @PostMapping("/total-revenue/by-date-range")
-    public ResponseEntity<Double> getTotalRevenueByDateRange(@RequestBody DashboardTimeRequest request) {
-        return new ResponseEntity<>(dashBoardService.getTotalRevenueByTimeRange(request), HttpStatus.OK);
-    }
-
-    @GetMapping("/total-profit")
-    public ResponseEntity<Double> getTotalProfit() {
-        return new ResponseEntity<>(dashBoardService.getTotalProfit(), HttpStatus.OK);
-    }
-
-    @PostMapping("/total-profit/by-date-range")
-    public ResponseEntity<Double> getTotalProfitByDateRange(@RequestBody DashboardTimeRequest request) {
-        return new ResponseEntity<>(dashBoardService.getTotalProfitByTimeRange(request), HttpStatus.OK);
-    }
 }
 

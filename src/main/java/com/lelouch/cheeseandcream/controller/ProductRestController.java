@@ -41,9 +41,9 @@ public class ProductRestController {
         return new ResponseEntity<>(productCrudService.getProductById(id), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Iterable<ProductResponse>> getAllProducts() {
-        return new ResponseEntity<>(productCrudService.getAllProducts(), HttpStatus.OK);
+    @GetMapping("/agent/{agentId}")
+    public ResponseEntity<Iterable<ProductResponse>> getProductsByAgentId(@PathVariable Long agentId) {
+        return new ResponseEntity<>(productCrudService.getProductsByAgentId(agentId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

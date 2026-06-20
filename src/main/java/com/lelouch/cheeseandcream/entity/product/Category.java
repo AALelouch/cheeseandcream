@@ -24,7 +24,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
+    private boolean active = true;
 
     @Column(updatable = false)
     private LocalDateTime creationDate;

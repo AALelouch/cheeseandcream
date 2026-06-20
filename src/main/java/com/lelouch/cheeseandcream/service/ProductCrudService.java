@@ -8,8 +8,8 @@ public interface ProductCrudService {
 
     void createProduct(ProductRequest productData);
     ProductResponse getProductById(Long productId);
+    List<ProductResponse> getProductsByAgentId(Long agentId);
     void updateProduct(Long productId, ProductRequest productData);
-    List<ProductResponse> getAllProducts();
     void deleteProduct(Long productId);
 
 }

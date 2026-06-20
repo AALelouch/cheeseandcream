@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FinancialOperationRepository extends JpaRepository<FinancialOperation, Long> {
 
-    List<FinancialOperation> findAllByAgentId(Long idAgent);
+    List<FinancialOperation> findAllByAgentIdAndActiveIsTrue(Long idAgent);
 
 }
