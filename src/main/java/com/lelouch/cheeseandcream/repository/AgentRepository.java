@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AgentRepository extends JpaRepository<Agent, Long> {
 
@@ -15,4 +17,29 @@ public interface AgentRepository extends JpaRepository<Agent, Long> {
 
     Optional<Agent> findByIdAndActiveIsTrue(Long agentId);
     List<Agent> findAllByActiveIsTrue();
+
+    /**
+     * Calculates the total pending balance (Accounts Receivable) across all active agents.
+     * Returns the sum of all active agents' balance field.
+     *
+     * @return Total pending balance from all agents
+     */
+    @Query("SELECT COALESCE(SUM(a.balance), 0) " +
+           "FROM Agent a " +
+           "WHERE a.active = true")
+    Double getTotalPendingBalance();
+
+    /**
+     * Calculates the pending balance for a specific agent/customer.
+     * Returns the agent's balance field directly.
+     *
+     * @param agentId ID of the agent/customer
+     * @return Pending balance from agent's balance field
+     */
+    @Query("SELECT COALESCE(a.balance, 0) " +
+           "FROM Agent a " +
+           "WHERE a.active = true AND a.id = :agentId")
+    Double getPendingBalanceByAgent(@Param("agentId") Long agentId);
 }
+
+

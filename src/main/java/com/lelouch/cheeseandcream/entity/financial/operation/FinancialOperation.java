@@ -38,7 +38,6 @@ public class FinancialOperation {
     @OneToMany(mappedBy = "financialOperation", fetch = jakarta.persistence.FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OperationProduct> products;
 
-    private Double amount = 0.0;
     private Double total = 0.0;
     private String concept;
     @Enumerated(EnumType.STRING)

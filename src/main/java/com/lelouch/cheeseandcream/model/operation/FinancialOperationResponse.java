@@ -13,7 +13,6 @@ public class FinancialOperationResponse {
     private Long id;
     private List<ProductResponse> productResponses;
     private Long idAgent;
-    private Double amount;
     private String concept;
     private Double total;
     private OperationType operationType;

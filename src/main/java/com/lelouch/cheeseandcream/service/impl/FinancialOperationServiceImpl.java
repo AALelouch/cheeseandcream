@@ -46,7 +46,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
         financialOperation.setOperationType(FinancialOperation.OperationType.fromString(financialOperationRequest.getOperationType().name()));
         financialOperation.setAgent(agent);
         financialOperation.setConcept(financialOperationRequest.getConcept());
-        financialOperation.setAmount(financialOperationRequest.getAmount());
+        financialOperation.setTotal(financialOperationRequest.getAmount());
 
         if (financialOperationRequest.getProducts() == null) {
             throw new BadRequestException("Products list must not be null; send an empty list when there are no products");
@@ -88,7 +88,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
     private void performProductBasedOperation(FinancialOperation financialOperation, Agent agent, FinancialOperationRequest financialOperationRequest){
 
         List<Long> productIds = financialOperationRequest.getProducts().keySet().stream().toList();
-        List<Product> products = productRepository.findAllByActiveIsTrue(productIds);
+        List<Product> products = productRepository.findAllByIdInAndActiveIsTrue(productIds);
 
         if (products.size() != productIds.size()) {
             throw new BadRequestException("Some products not found with ids: " + productIds);

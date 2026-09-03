@@ -1,9 +1,13 @@
 package com.lelouch.cheeseandcream.model.dashboard;
 
+/**
+ * Complete dashboard financial metrics response.
+ * Contains aggregated financial data for a specific period.
+ */
 public record DashboardResponse(
-        Double totalDebt,
         Double totalRevenue,
-        Double totalProfit
+        Double totalProfit,
+        Double pendingBalance
 ) {
 }
 

@@ -1,16 +1,37 @@
 # Compiled class file
 *.class
 
+# IDE / editor
+.idea/
+*.iml
+.vscode/
+
+# Build outputs
+target/
+out/
+build/
+
 # Log file
 *.log
+logs/
+*.pid
+*.pid.lock
 
 # BlueJ files
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-target
-.idea
+
+# Local environment / secrets
+.env
+.env.*
+application-local*.yaml
+application-dev*.yaml
+
+# OS cruft
+.DS_Store
+Thumbs.db
 
 # Package Files #
 *.jar

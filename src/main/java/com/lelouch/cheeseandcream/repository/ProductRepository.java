@@ -9,7 +9,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByAgentIdAndActiveIsTrue(Long agentId);
     Optional<Product> findByIdAndActiveIsTrue(Long id);
-    List<Product> findAllByActiveIsTrue(List<Long> productIds);
+    List<Product> findAllByIdInAndActiveIsTrue(List<Long> productIds);
     boolean existsByNameAndActiveIsTrueAndAgentId(String name, Long  agentId);
     boolean existsByNameAndActiveIsTrueAndIdNotAndAgentId(String name, Long id, Long agentId);
 
