@@ -49,7 +49,7 @@ public class FinancialOperation {
     private LocalDateTime modifiedDate;
 
     public enum OperationType {
-        SALE, PURCHASE, PAYMENT;
+        SALE, PURCHASE, PAYMENT, CLIENT_PAYMENT;
 
         public static OperationType fromString(String value) {
             for (OperationType type : OperationType.values()) {

@@ -60,10 +60,16 @@ public class ProductCrudServiceImpl implements ProductCrudService {
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         Agent agent = agentRepository.findById(productData.agendId())
                 .orElseThrow(() -> new NotFoundException("Agent not found"));
-        Product product = productMapper.toEntity(productData);
-        product.setId(productId);
+        Product product = productRepository.findByIdAndActiveIsTrue(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
         product.setCategory(category);
         product.setAgent(agent);
+        product.setQuantity(productData.quantity());
+        product.setName(productData.name());
+        product.setPrice(productData.price());
+        product.setCost(productData.cost());
+        product.setUnitType(productData.unitType());
+
         productRepository.save(product);
     }
 

@@ -77,7 +77,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
         if (financialOperationRequest.getAmount() != null && financialOperationRequest.getAmount() > 0) {
             switch (operationType) {
                 case SALE, PAYMENT -> agent.setBalance(agent.getBalance() - financialOperationRequest.getAmount());
-                case PURCHASE -> agent.setBalance(agent.getBalance() + financialOperationRequest.getAmount());
+                case CLIENT_PAYMENT, PURCHASE -> agent.setBalance(agent.getBalance() + financialOperationRequest.getAmount());
                 default -> throw new BadRequestException("Invalid operation type: " + operationType);
             }
         }

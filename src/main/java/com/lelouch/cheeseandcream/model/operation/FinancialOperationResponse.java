@@ -20,7 +20,7 @@ public class FinancialOperationResponse {
 
 
     public enum OperationType {
-        SALE, PURCHASE, PAYMENT
+        SALE, PURCHASE, PAYMENT, CLIENT_PAYMENT;
     }
 
     @Data

@@ -47,11 +47,16 @@ public class AgentCrudServiceImpl implements AgentCrudService {
         ValidatorUtils.validateData(() -> agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumberAndIdNot(agentData.name(), agentData.email(),
                 agentData.address(), agentData.identificationNumber(), agentId), "Agent with the same name, email, address or identification number already exists");
 
-        Agent agent = agentMapper.toEntity(agentData);
+        Agent agent = agentRepository.findById(agentId).orElseThrow(() -> new NotFoundException("Agent not found"));
         IdentificationType identificationType = identificationTypeRepository.findById(agentData.identificationTypeId())
                 .orElseThrow(() -> new NotFoundException("Identification type not found"));
         agent.setIdentificationType(identificationType);
         agent.setId(agentId);
+        agent.setBalance(Double.valueOf(agentData.balance()));
+        agent.setName(agentData.name());
+        agent.setEmail(agentData.email());
+        agent.setAddress(agentData.address());
+        agent.setIdentificationNumber(agentData.identificationNumber());
 
         agentRepository.save(agent);
     }
