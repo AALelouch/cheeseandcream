@@ -10,7 +10,10 @@ import com.lelouch.cheeseandcream.service.AgentCrudService;
 import com.lelouch.cheeseandcream.mapper.AgentMapper;
 import com.lelouch.cheeseandcream.model.agent.AgentRequest;
 import com.lelouch.cheeseandcream.model.agent.AgentResponse;
-import java.util.List;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +31,7 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "agents", allEntries = true)
     public void createAgent(AgentRequest agentData) {
 
         ValidatorUtils.validateData(() -> agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumber(agentData.name(), agentData.email(),
@@ -42,6 +46,7 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "agents", allEntries = true)
     public void updateAgent(Long agentId, AgentRequest agentData) {
 
         ValidatorUtils.validateData(() -> agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumberAndIdNot(agentData.name(), agentData.email(),
@@ -62,6 +67,7 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "agents", allEntries = true)
     public void deleteAgent(Long agentId) {
         Agent agent = agentRepository.findByIdAndActiveIsTrue(agentId).orElseThrow(() -> new NotFoundException("Agent not found"));
         agent.setActive(false);
@@ -69,6 +75,7 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
+    @Cacheable(cacheNames = "agents", key = "#agentId")
     public AgentResponse getAgent(Long agentId) {
         return agentRepository.findByIdAndActiveIsTrue(agentId)
                 .map(agentMapper::toResponse)
@@ -76,9 +83,8 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
-    public List<AgentResponse> getAllAgents() {
-        return agentRepository.findAllByActiveIsTrue().stream()
-                .map(agentMapper::toResponse)
-                .toList();
+    @Cacheable(cacheNames = "agents", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
+    public Page<AgentResponse> getAllAgents(Pageable pageable) {
+        return agentRepository.findAllByActiveIsTrue(pageable).map(agentMapper::toResponse);
     }
 }

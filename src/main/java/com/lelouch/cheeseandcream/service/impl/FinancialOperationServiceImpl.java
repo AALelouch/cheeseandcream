@@ -16,6 +16,8 @@ import com.lelouch.cheeseandcream.service.FinancialOperationService;
 import jakarta.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -134,9 +136,7 @@ public class FinancialOperationServiceImpl implements FinancialOperationService 
     }
 
     @Override
-    public List<FinancialOperationResponse> getOperationsByAgentId(Long idAgent) {
-        return financialOperationRepository.findAllByAgentIdAndActiveIsTrue(idAgent).stream()
-                .map(financialOperationMapper::toResponse)
-                .toList();
+    public Page<FinancialOperationResponse> getOperationsByAgentId(Long idAgent, Pageable pageable) {
+        return financialOperationRepository.findAllByAgentIdAndActiveIsTrue(idAgent, pageable).map(financialOperationMapper::toResponse);
     }
 }

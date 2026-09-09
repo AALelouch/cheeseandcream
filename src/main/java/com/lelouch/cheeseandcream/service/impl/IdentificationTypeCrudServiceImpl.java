@@ -7,6 +7,7 @@ import com.lelouch.cheeseandcream.service.IdentificationTypeCrudService;
 import com.lelouch.cheeseandcream.model.agent.IdentificationTypeResponse;
 import com.lelouch.cheeseandcream.model.agent.IdentificationTypeRequest;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +43,7 @@ public class IdentificationTypeCrudServiceImpl implements IdentificationTypeCrud
     }
 
     @Override
+    @Cacheable(value = "identificationTypes")
     public List<IdentificationTypeResponse> getAllIdentificationTypes() {
         return identificationTypeRepository.findAllByActiveIsTrue().stream()
                 .map(identificationType -> new IdentificationTypeResponse(identificationType.getId(), identificationType.getName()))

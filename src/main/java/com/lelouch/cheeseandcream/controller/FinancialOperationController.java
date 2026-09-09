@@ -3,7 +3,7 @@ package com.lelouch.cheeseandcream.controller;
 import com.lelouch.cheeseandcream.model.operation.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.model.operation.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.service.FinancialOperationService;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +29,8 @@ public class FinancialOperationController {
     }
 
     @GetMapping("/agent/{idAgent}")
-    public ResponseEntity<List<FinancialOperationResponse>> getFinancialOperationsByAgentId(@PathVariable Long idAgent) {
-        return ResponseEntity.ok(financialOperationService.getOperationsByAgentId(idAgent));
+    public ResponseEntity<Iterable<FinancialOperationResponse>> getFinancialOperationsByAgentId(@PathVariable Long idAgent, Pageable pageable) {
+        return ResponseEntity.ok(financialOperationService.getOperationsByAgentId(idAgent, pageable));
     }
 
 }

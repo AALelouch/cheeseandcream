@@ -8,6 +8,7 @@ import com.lelouch.cheeseandcream.model.product.CategoryResponse;
 import com.lelouch.cheeseandcream.repository.CategoryRepository;
 import com.lelouch.cheeseandcream.service.CategoryCrudService;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,11 +31,13 @@ public class CategoryCrudServiceImpl implements CategoryCrudService {
     }
 
     @Override
+    @Cacheable(value = "categories", key = "#id")
     public CategoryResponse getCategoryById(Long id) {
         return categoryMapper.toResponse(categoryRepository.findByIdAndActiveIsTrue(id).orElseThrow(() -> new NotFoundException("Category not found")));
     }
 
     @Override
+    @Cacheable(cacheNames = "categories")
     public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAllByActiveIsTrue().stream().map(categoryMapper::toResponse).toList();
     }

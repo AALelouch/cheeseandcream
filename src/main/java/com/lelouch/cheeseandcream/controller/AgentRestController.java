@@ -3,6 +3,7 @@ package com.lelouch.cheeseandcream.controller;
 import com.lelouch.cheeseandcream.service.AgentCrudService;
 import com.lelouch.cheeseandcream.model.agent.AgentRequest;
 import com.lelouch.cheeseandcream.model.agent.AgentResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,8 +43,8 @@ public class AgentRestController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<AgentResponse>> getAllAgents() {
-        return new ResponseEntity<>(agentCrudService.getAllAgents(), HttpStatus.OK);
+    public ResponseEntity<Iterable<AgentResponse>> getAllAgents(Pageable pageable) {
+        return new ResponseEntity<>(agentCrudService.getAllAgents(pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

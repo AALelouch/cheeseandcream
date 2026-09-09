@@ -2,12 +2,13 @@ package com.lelouch.cheeseandcream.service;
 
 import com.lelouch.cheeseandcream.model.operation.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.model.operation.FinancialOperationResponse;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface FinancialOperationService {
 
     void addOperation(FinancialOperationRequest financialOperationRequest);
-    List<FinancialOperationResponse> getOperationsByAgentId(Long idAgent);
+    Page<FinancialOperationResponse> getOperationsByAgentId(Long idAgent, Pageable pageable);
 
 
 }

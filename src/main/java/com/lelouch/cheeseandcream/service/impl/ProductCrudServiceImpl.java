@@ -13,6 +13,8 @@ import com.lelouch.cheeseandcream.mapper.ProductMapper;
 import com.lelouch.cheeseandcream.model.product.ProductRequest;
 import com.lelouch.cheeseandcream.model.product.ProductResponse;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -74,8 +76,8 @@ public class ProductCrudServiceImpl implements ProductCrudService {
     }
 
     @Override
-    public List<ProductResponse> getProductsByAgentId(Long agentId) {
-        return productRepository.findByAgentIdAndActiveIsTrue(agentId).stream().map(productMapper::toResponse).toList();
+    public Page<ProductResponse> getProductsByAgentId(Long agentId, Pageable pageable) {
+        return productRepository.findByAgentIdAndActiveIsTrue(agentId, pageable).map(productMapper::toResponse);
     }
 
     @Override
