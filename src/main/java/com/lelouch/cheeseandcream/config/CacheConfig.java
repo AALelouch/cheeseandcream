@@ -21,22 +21,22 @@ public class CacheConfig {
         CaffeineCache agentsCache = new CaffeineCache("agents",
                         Caffeine.newBuilder()
                         .expireAfterWrite(60, TimeUnit.MINUTES)
-                        .maximumSize(500)
+                        .maximumSize(100)
+                        .build());
+
+        CaffeineCache agentsById = new CaffeineCache("agents-by-id",
+                Caffeine.newBuilder()
+                        .expireAfterWrite(60, TimeUnit.MINUTES)
+                        .maximumSize(100)
                         .build());
 
         CaffeineCache identificationTypesCache = new CaffeineCache("identificationTypes",
                 Caffeine.newBuilder()
                         .expireAfterWrite(60, TimeUnit.MINUTES)
-                        .maximumSize(500)
+                        .maximumSize(6)
                         .build());
 
-        CaffeineCache categoriesCache = new CaffeineCache("categories",
-                Caffeine.newBuilder()
-                        .expireAfterWrite(60, TimeUnit.MINUTES)
-                        .maximumSize(10)
-                        .build());
-
-        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, categoriesCache));
+        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, agentsById));
         return cacheManager;
     }
 

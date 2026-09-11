@@ -19,6 +19,8 @@ public interface AgentRepository extends JpaRepository<Agent, Long> {
 
     Optional<Agent> findByIdAndActiveIsTrue(Long agentId);
     Page<Agent> findAllByActiveIsTrue(Pageable pageable);
+    List<Agent> findAllByActiveIsTrue();
+
 
     /**
      * Calculates the total pending balance (Accounts Receivable) across all active agents.
@@ -42,6 +44,16 @@ public interface AgentRepository extends JpaRepository<Agent, Long> {
            "FROM Agent a " +
            "WHERE a.active = true AND a.id = :agentId")
     Double getPendingBalanceByAgent(@Param("agentId") Long agentId);
+
+    @Query("""
+    SELECT a FROM Agent a\s
+    WHERE a.active = true\s
+      AND (LOWER(a.name) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.email) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.address) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.identificationNumber) LIKE LOWER(CONCAT('%', :term, '%')))
+""")
+    Page<Agent> searchByTerm(@Param("term") String term, Pageable pageable);
 }
 
 

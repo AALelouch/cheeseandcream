@@ -37,7 +37,6 @@ public class CategoryCrudServiceImpl implements CategoryCrudService {
     }
 
     @Override
-    @Cacheable(cacheNames = "categories")
     public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAllByActiveIsTrue().stream().map(categoryMapper::toResponse).toList();
     }

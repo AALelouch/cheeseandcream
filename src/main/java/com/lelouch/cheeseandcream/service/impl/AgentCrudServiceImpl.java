@@ -75,7 +75,7 @@ public class AgentCrudServiceImpl implements AgentCrudService {
     }
 
     @Override
-    @Cacheable(cacheNames = "agents", key = "#agentId")
+    @Cacheable(cacheNames = "agents-by-id", key = "#agentId")
     public AgentResponse getAgent(Long agentId) {
         return agentRepository.findByIdAndActiveIsTrue(agentId)
                 .map(agentMapper::toResponse)
