@@ -1,6 +1,6 @@
 # AGENTS.md - CheeseAndCream Backend Guide
 
-**Project**: Spring Boot REST API for product/agent/financial operations management  
+**Project**: Spring Boot REST API for productEntity/agentEntity/financial operations management  
 **Stack**: Java 25, Spring Boot 4.0.2, MySQL 8.0, MapStruct, Lombok  
 **Architecture**: Clean Layers Pattern (Controller → Service → Repository → Entity)
 
@@ -29,7 +29,7 @@ controller/ → service/ (interface) → service/impl/ (implementation)
 ## Module-Specific Patterns
 
 ### Adding a New CRUD Module (e.g., Category)
-1. **Create Entity**: `src/main/java/com/lelouch/cheeseandcream/entity/product/Category.java`
+1. **Create Entity**: `src/main/java/com/lelouch/cheeseandcream/entity/productEntity/Category.java`
    - Must include: `@Id`, `@Version`, `active` boolean, timestamps with `@PrePersist/@PreUpdate`
 
 2. **Create DTOs**: In `src/main/java/com/lelouch/cheeseandcream/model/`
@@ -42,7 +42,7 @@ controller/ → service/ (interface) → service/impl/ (implementation)
    ```java
    @Mapper(componentModel = "spring")
    public interface CategoryMapper {
-       CategoryResponse toResponse(Category category);
+       CategoryResponse toResponse(Category categoryEntity);
        Category toEntity(CategoryRequest request);
    }
    ```
@@ -64,7 +64,7 @@ For services that aggregate data across multiple records:
 
 1. **Add Query Methods to Repository** (using `@Query`)
    ```java
-   @Query("SELECT SUM(t.total) FROM FinancialOperation t WHERE t.active = true 
+   @Query("SELECT SUM(t.total) FROM FinancialOperationEntity t WHERE t.active = true 
            AND t.creationDate BETWEEN :startDate AND :endDate 
            AND t.operationType = 'SALE'")
    Double sumRevenueByTimeRange(@Param("startDate") LocalDateTime startDate, 
@@ -84,13 +84,13 @@ For services that aggregate data across multiple records:
    - **Debt**: Sum of PURCHASE operations (`operationType = 'PURCHASE'`)
    - **Revenue**: Sum of all SALE operations (`operationType = 'SALE'`)
    - **Profit** (Actual): SUM(OperationProduct.totalPrice - Product.cost * OperationProduct.quantity)
-     - Correctly deducts product costs from sales revenue
-     - Formula: For each sold product: (sales_total - cost_per_unit * quantity_sold)
+     - Correctly deducts productEntity costs from sales revenue
+     - Formula: For each sold productEntity: (sales_total - cost_per_unit * quantity_sold)
      ```java
      @Query("SELECT COALESCE(SUM(op.totalPrice - (p.cost * op.quantity)), 0) " +
-            "FROM FinancialOperation f " +
-            "JOIN f.products op " +
-            "JOIN op.product p " +
+            "FROM FinancialOperationEntity f " +
+            "JOIN f.productEntities op " +
+            "JOIN op.productEntity p " +
             "WHERE f.active = true AND f.operationType = 'SALE' " +
             "AND f.creationDate BETWEEN :startDate AND :endDate")
      Double sumProfitByTimeRange(@Param("startDate") LocalDateTime startDate, 
@@ -128,7 +128,7 @@ For services that aggregate data across multiple records:
 - **Controllers**: `*RestController` (e.g., `ProductRestController`)
 - **Services**: `*CrudService` interface + `*CrudServiceImpl` implementation
 - **Mappers**: `*Mapper` interface (MapStruct generates `*MapperImpl`)
-- **Endpoints**: `/api/{resource}` (e.g., `/api/products`, `/api/agents`)
+- **Endpoints**: `/api/{resource}` (e.g., `/api/productEntities`, `/api/agents`)
 
 ### Entity Relationships
 - **All relationships use `cascade = CascadeType.DETACH`** (prevents accidental cascades)
@@ -137,7 +137,7 @@ For services that aggregate data across multiple records:
   ```java
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
   @JoinColumn(name = "agent_id", nullable = false)
-  private Agent agent;
+  private Agent agentEntity;
   ```
 
 ### Lombok Usage
@@ -176,7 +176,7 @@ For services that aggregate data across multiple records:
 docker-compose up -d
 
 # Database: mydatabase
-# User: root / Password: verysecret
+# UserEntity: root / Password: verysecret
 # Port: 3306
 ```
 
@@ -194,9 +194,9 @@ docker-compose up -d
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     // Maps nested entity properties to DTO fields
-    @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "agentName", source = "agent.name")
-    ProductResponse toResponse(Product product);
+    @Mapping(target = "categoryName", source = "categoryEntity.name")
+    @Mapping(target = "agentName", source = "agentEntity.name")
+    ProductResponse toResponse(Product productEntity);
     
     Product toEntity(ProductRequest productRequest);
 }

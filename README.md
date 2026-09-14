@@ -1,6 +1,6 @@
 # CheeseAndCream Backend
 
-CheeseAndCream is a Spring Boot REST API for managing agents, categories, products, financial operations, and dashboard metrics for a small business workflow.
+CheeseAndCream is a Spring Boot REST API for managing agents, categories, productEntities, financial operations, and dashboard metrics for a small business workflow.
 
 It is designed as a portfolio-ready backend project with a clean layered architecture, soft-delete support, financial analytics, and OpenAPI documentation.
 
@@ -40,8 +40,8 @@ controller -> service -> service/impl -> repository -> entity
 ### Main domain areas
 
 - **Agents**: customers or commercial agents with balances and identity data
-- **Products**: catalog items with price, cost, quantity, category, and agent ownership
-- **Categories**: product classification
+- **Products**: catalog items with price, cost, quantity, categoryEntity, and agentEntity ownership
+- **Categories**: productEntity classification
 - **Identification Types**: identity document types
 - **Financial Operations**: sales, purchases, and payments
 - **Dashboard**: aggregated metrics for business reporting
@@ -75,22 +75,22 @@ Base path: `/api`
 
 ### Products
 
-- `POST /api/products`
-- `GET /api/products/{id}`
-- `GET /api/products/agent/{agentId}`
-- `PUT /api/products/{id}`
-- `DELETE /api/products/{id}`
+- `POST /api/productEntities`
+- `GET /api/productEntities/{id}`
+- `GET /api/productEntities/agentEntity/{agentId}`
+- `PUT /api/productEntities/{id}`
+- `DELETE /api/productEntities/{id}`
 
 ### Financial Operations
 
 - `POST /api/financial-operations`
-- `GET /api/financial-operations/agent/{idAgent}`
+- `GET /api/financial-operations/agentEntity/{idAgent}`
 
 ### Dashboard
 
 - `GET /api/dashboard/monthly/{month}`
 - `GET /api/dashboard/pending-balance/total`
-- `GET /api/dashboard/pending-balance/agent/{agentId}`
+- `GET /api/dashboard/pending-balance/agentEntity/{agentId}`
 - `GET /api/dashboard/pending-balance/monthly/{month}`
 
 ## Financial Metrics
@@ -99,7 +99,7 @@ The dashboard exposes the following business metrics:
 
 - **Debt**: total amount owed to suppliers
 - **Revenue**: total sales value
-- **Profit**: real profit after deducting product cost from sales
+- **Profit**: real profit after deducting productEntity cost from sales
 - **Pending balance**: accounts receivable stored in the `Agent.balance` field
 
 ## Local Development
