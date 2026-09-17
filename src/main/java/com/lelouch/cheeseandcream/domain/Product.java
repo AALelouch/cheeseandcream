@@ -9,11 +9,16 @@ public class Product {
     private Double cost = 0.0;
     private String unitType;
     private Category category;
+    private Agent agent;
 
     private Product() {
     }
 
     public static Product create(Long id, String name, Double quantity, Double price, Double cost, String unitType, Category category) {
+        return create(id, name, quantity, price, cost, unitType, category, null);
+    }
+
+    public static Product create(Long id, String name, Double quantity, Double price, Double cost, String unitType, Category category, Agent agent) {
         Product product = new Product();
         product.id = id;
         product.name = name;
@@ -22,6 +27,7 @@ public class Product {
         product.cost = cost;
         product.unitType = unitType;
         product.category = category;
+        product.agent = agent;
         return product;
     }
 
@@ -64,6 +70,29 @@ public class Product {
         }
     }
 
+    public static class Agent {
+        private Long id;
+        private String name;
+
+        private Agent() {
+        }
+
+        public static Agent create(Long id, String name) {
+            Agent agent = new Agent();
+            agent.id = id;
+            agent.name = name;
+            return agent;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,5 +119,9 @@ public class Product {
 
     public Category getCategory() {
         return category;
+    }
+
+    public Agent getAgent() {
+        return agent;
     }
 }

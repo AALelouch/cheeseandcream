@@ -9,11 +9,17 @@ public class Agent {
     private String address;
     private Double balance = 0.0;
     private String identificationNumber;
+    private Long identificationTypeId;
 
     private Agent() {
     }
 
     public static Agent create(Long id, String name, String email, String phoneNumber, String address, Double balance, String identificationNumber) {
+        return create(id, name, email, phoneNumber, address, balance, identificationNumber, null);
+    }
+
+    public static Agent create(Long id, String name, String email, String phoneNumber, String address, Double balance,
+            String identificationNumber, Long identificationTypeId) {
         Agent agent = new Agent();
         agent.id = id;
         agent.name = name;
@@ -22,6 +28,7 @@ public class Agent {
         agent.address = address;
         agent.balance = balance;
         agent.identificationNumber = identificationNumber;
+        agent.identificationTypeId = identificationTypeId;
         return agent;
     }
 
@@ -59,5 +66,9 @@ public class Agent {
 
     public String getIdentificationNumber() {
         return identificationNumber;
+    }
+
+    public Long getIdentificationTypeId() {
+        return identificationTypeId;
     }
 }

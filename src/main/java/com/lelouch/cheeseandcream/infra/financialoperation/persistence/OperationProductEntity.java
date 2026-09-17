@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.financialoperation.persistence;
 
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
-import com.lelouch.cheeseandcream.infra.orm.product.ProductEntity;
+import com.lelouch.cheeseandcream.infra.product.persistence.ProductEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

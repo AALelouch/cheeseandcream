@@ -2,20 +2,22 @@
 
 **Project**: Spring Boot REST API for productEntity/agentEntity/financial operations management  
 **Stack**: Java 25, Spring Boot 4.0.2, MySQL 8.0, MapStruct, Lombok  
-**Architecture**: Clean Layers Pattern (Controller → Service → Repository → Entity)
+**Architecture**: Feature-based hexagonal architecture (Controller → Use Case/Interactor → Ports → Adapters)
 
 ---
 
 ## Project Architecture Overview
 
 ### Core Layer Structure
+```text
+domain/                         framework-independent business models
+application/{feature}/         DTOs, use cases, interactors and ports
+infra/{feature}/               controllers, presenters and adapters
+infra/{feature}/persistence/   JPA entities and Spring Data repositories
+infra/config + infra/advice    shared framework concerns
 ```
-controller/ → service/ (interface) → service/impl/ (implementation)
-    ↓                                      ↓
- Models (Request/Response Records)    Mappers (MapStruct)
-    ↑                                      ↓
-    ←--------- entity/ ←---- repository/ ←
-```
+
+Dependencies always point inward: infrastructure implements application ports; application and domain never import infrastructure.
 
 ### Key Design Decisions
 - **Soft Deletes**: All entities use `active: boolean` flag instead of hard deletion (see `Product.java` lines 41, 76-79)
@@ -29,36 +31,15 @@ controller/ → service/ (interface) → service/impl/ (implementation)
 ## Module-Specific Patterns
 
 ### Adding a New CRUD Module (e.g., Category)
-1. **Create Entity**: `src/main/java/com/lelouch/cheeseandcream/entity/productEntity/Category.java`
-   - Must include: `@Id`, `@Version`, `active` boolean, timestamps with `@PrePersist/@PreUpdate`
-
-2. **Create DTOs**: In `src/main/java/com/lelouch/cheeseandcream/model/`
-   ```java
-   public record CategoryRequest(String name, String description) {}
-   public record CategoryResponse(Long id, String name, String description) {}
-   ```
-
-3. **Create Mapper**: `src/main/java/com/lelouch/cheeseandcream/mapper/CategoryMapper.java`
-   ```java
-   @Mapper(componentModel = "spring")
-   public interface CategoryMapper {
-       CategoryResponse toResponse(Category categoryEntity);
-       Category toEntity(CategoryRequest request);
-   }
-   ```
-
-4. **Create Service Interface**: `src/main/java/com/lelouch/cheeseandcream/service/CategoryCrudService.java`
-
-5. **Create Implementation**: `src/main/java/com/lelouch/cheeseandcream/service/impl/CategoryCrudServiceImpl.java`
-   - Always inject dependencies via constructor (no `@Autowired`)
-   - Use `ValidatorUtils.validateData()` for business rule validation
-
-6. **Create Controller**: `src/main/java/com/lelouch/cheeseandcream/controller/CategoryRestController.java`
-   - Map to `/api/categories` following REST standards
-   - Inject service via constructor
+1. Create the framework-independent domain model in `domain/`.
+2. Create DTOs, `*UseCase`, `*Interactor`, command/query ports and `*OutputPort` in `application/{feature}/`.
+3. Create the controller, presenter and persistence adapters in `infra/{feature}/`.
+4. Place JPA entities and Spring Data repositories in `infra/{feature}/persistence/`.
+5. Inject dependencies through constructors and keep business validation in the domain/interactor.
+6. Add architecture, interactor and persistence tests before removing any superseded implementation.
 
 ### Dashboard Service Pattern (Analytics/Aggregations)
-**File**: `service/impl/DashBoardServiceImpl.java`
+**File**: `application/dashboard/DashboardInteractor.java`
 
 For services that aggregate data across multiple records:
 
@@ -217,7 +198,8 @@ public interface ProductMapper {
 | `ValidatorUtils.java` | Business validation helper |
 | `exception/{*Exception,advice/*Advice}.java` | Custom exceptions + global handlers |
 | `config/WebConfig.java` | CORS configuration |
-| `src/main/java/com/lelouch/cheeseandcream/service/impl/ProductCrudServiceImpl.java` | Template for new service implementations |
+| `src/main/java/com/lelouch/cheeseandcream/application/product/ProductInteractor.java` | Template for application interactors |
+| `src/main/java/com/lelouch/cheeseandcream/infra/product/adapter/ProductJpaAdapter.java` | Template for persistence adapters |
 
 ---
 

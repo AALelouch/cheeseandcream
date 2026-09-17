@@ -29,12 +29,14 @@ It is designed as a portfolio-ready backend project with a clean layered archite
 
 ## Architecture
 
-The project follows a layered structure:
+The project follows a feature-based hexagonal structure:
 
 ```text
-controller -> service -> service/impl -> repository -> entity
-					  -> mapper
-					  -> model (request/response)
+infra/{feature}/controller -> application/{feature}/use case + interactor
+                                      -> command/query/output ports
+                                      <- infra/{feature}/adapters
+                                      <- infra/{feature}/persistence
+domain/ contains framework-independent business models
 ```
 
 ### Main domain areas
@@ -172,15 +174,14 @@ Important defaults:
 
 ```text
 src/main/java/com/lelouch/cheeseandcream/
-├── config/
-├── controller/
-├── entity/
-├── exception/
-├── mapper/
-├── model/
-├── repository/
-├── service/
-└── ValidatorUtils.java
+├── application/
+│   └── {feature}/        # DTOs, use cases, interactors and ports
+├── domain/               # business models, validation and exceptions
+└── infra/
+    ├── {feature}/        # controllers, presenters and adapters
+    │   └── persistence/  # JPA entities and repositories
+    ├── advice/
+    └── config/
 ```
 
 ## Design Notes

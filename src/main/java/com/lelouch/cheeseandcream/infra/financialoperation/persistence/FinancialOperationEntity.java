@@ -2,7 +2,7 @@ package com.lelouch.cheeseandcream.infra.financialoperation.persistence;
 
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.OperationType;
-import com.lelouch.cheeseandcream.infra.orm.agent.AgentEntity;
+import com.lelouch.cheeseandcream.infra.agent.persistence.AgentEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
