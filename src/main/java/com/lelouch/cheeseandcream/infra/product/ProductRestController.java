@@ -3,6 +3,7 @@ package com.lelouch.cheeseandcream.infra.product;
 import com.lelouch.cheeseandcream.application.product.ProductUseCase;
 import com.lelouch.cheeseandcream.application.product.ProductRequest;
 import com.lelouch.cheeseandcream.application.product.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.ProductTermRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,12 @@ public class ProductRestController {
     @GetMapping("/agent/{agentId}")
     public ResponseEntity<Iterable<ProductResponse>> getProductsByAgentId(@PathVariable Long agentId, Pageable pageable) {
         return new ResponseEntity<>(productUseCase.getProductsByAgentId(agentId, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/agent/{agentId}/search")
+    public ResponseEntity<Iterable<ProductResponse>> searchProducts(@PathVariable Long agentId,
+            @RequestBody ProductTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(productUseCase.searchProducts(agentId, term, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

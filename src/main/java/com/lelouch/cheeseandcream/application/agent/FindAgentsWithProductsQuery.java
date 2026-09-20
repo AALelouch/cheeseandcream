@@ -4,7 +4,7 @@ import com.lelouch.cheeseandcream.domain.Agent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface SearchAgentsByTermQuery {
+public interface FindAgentsWithProductsQuery {
 
-    Page<Agent> searchByTerm(AgentTermRequest term, Pageable pageable);
+    Page<Agent> findAgentsWithProducts(Pageable pageable);
 }

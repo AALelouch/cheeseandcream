@@ -18,18 +18,21 @@ public class AgentInteractor implements AgentUseCase {
     private final DeactivateAgentCommand deactivateAgentCommand;
     private final FindAgentByIdQuery findAgentByIdQuery;
     private final FindActiveAgentsQuery findActiveAgentsQuery;
+    private final FindAgentsWithProductsQuery findAgentsWithProductsQuery;
     private final SearchAgentsByTermQuery searchAgentsByTermQuery;
     private final AgentExistsQuery agentExistsQuery;
     private final AgentOutputPort agentOutputPort;
 
     public AgentInteractor(SaveAgentCommand saveAgentCommand, DeactivateAgentCommand deactivateAgentCommand,
             FindAgentByIdQuery findAgentByIdQuery, FindActiveAgentsQuery findActiveAgentsQuery,
+            FindAgentsWithProductsQuery findAgentsWithProductsQuery,
             SearchAgentsByTermQuery searchAgentsByTermQuery, AgentExistsQuery agentExistsQuery,
             AgentOutputPort agentOutputPort) {
         this.saveAgentCommand = saveAgentCommand;
         this.deactivateAgentCommand = deactivateAgentCommand;
         this.findAgentByIdQuery = findAgentByIdQuery;
         this.findActiveAgentsQuery = findActiveAgentsQuery;
+        this.findAgentsWithProductsQuery = findAgentsWithProductsQuery;
         this.searchAgentsByTermQuery = searchAgentsByTermQuery;
         this.agentExistsQuery = agentExistsQuery;
         this.agentOutputPort = agentOutputPort;
@@ -84,7 +87,12 @@ public class AgentInteractor implements AgentUseCase {
     }
 
     @Override
-    public Page<AgentResponse> searchAgents(String term, Pageable pageable) {
+    public Page<AgentResponse> getAgentsWithProducts(Pageable pageable) {
+        return agentOutputPort.mapToResponse(findAgentsWithProductsQuery.findAgentsWithProducts(pageable));
+    }
+
+    @Override
+    public Page<AgentResponse> searchAgents(AgentTermRequest term, Pageable pageable) {
         return agentOutputPort.mapToResponse(searchAgentsByTermQuery.searchByTerm(term, pageable));
     }
 

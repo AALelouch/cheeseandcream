@@ -33,6 +33,16 @@ public interface AgentRepository extends JpaRepository<AgentEntity, Long> {
     Page<AgentEntity> findAllByActiveIsTrue(Pageable pageable);
     List<AgentEntity> findAllByActiveIsTrue();
 
+    @Query("""
+            SELECT a FROM AgentEntity a
+            WHERE a.active = true
+              AND EXISTS (
+                  SELECT p.id FROM ProductEntity p
+                  WHERE p.agentEntity = a AND p.active = true
+              )
+            """)
+    Page<AgentEntity> findActiveAgentsWithProducts(Pageable pageable);
+
 
     /**
      * Calculates the total pending balance (Accounts Receivable) across all active agents.

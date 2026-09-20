@@ -8,6 +8,7 @@ public interface ProductUseCase {
     void createProduct(ProductRequest productRequest);
     ProductResponse getProductById(Long productId);
     Page<ProductResponse> getProductsByAgentId(Long agentId, Pageable pageable);
+    Page<ProductResponse> searchProducts(Long agentId, ProductTermRequest term, Pageable pageable);
     void updateProduct(Long productId, ProductRequest productRequest);
     void deleteProduct(Long productId);
 }

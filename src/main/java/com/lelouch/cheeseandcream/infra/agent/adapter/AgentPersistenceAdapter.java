@@ -1,8 +1,10 @@
 package com.lelouch.cheeseandcream.infra.agent.adapter;
 
 import com.lelouch.cheeseandcream.application.agent.AgentExistsQuery;
+import com.lelouch.cheeseandcream.application.agent.AgentTermRequest;
 import com.lelouch.cheeseandcream.application.agent.DeactivateAgentCommand;
 import com.lelouch.cheeseandcream.application.agent.FindActiveAgentsQuery;
+import com.lelouch.cheeseandcream.application.agent.FindAgentsWithProductsQuery;
 import com.lelouch.cheeseandcream.application.agent.FindAgentByIdQuery;
 import com.lelouch.cheeseandcream.application.agent.SaveAgentCommand;
 import com.lelouch.cheeseandcream.application.agent.SearchAgentsByTermQuery;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AgentPersistenceAdapter implements SaveAgentCommand, DeactivateAgentCommand, FindAgentByIdQuery,
-        FindActiveAgentsQuery, SearchAgentsByTermQuery, AgentExistsQuery {
+        FindActiveAgentsQuery, FindAgentsWithProductsQuery, SearchAgentsByTermQuery, AgentExistsQuery {
 
     private final AgentRepository agentRepository;
     private final IdentificationTypeRepository identificationTypeRepository;
@@ -57,8 +59,13 @@ public class AgentPersistenceAdapter implements SaveAgentCommand, DeactivateAgen
     }
 
     @Override
-    public Page<Agent> searchByTerm(String term, Pageable pageable) {
-        return agentRepository.searchByTerm(term, pageable).map(AgentEntity::toDomain);
+    public Page<Agent> findAgentsWithProducts(Pageable pageable) {
+        return agentRepository.findActiveAgentsWithProducts(pageable).map(AgentEntity::toDomain);
+    }
+
+    @Override
+    public Page<Agent> searchByTerm(AgentTermRequest term, Pageable pageable) {
+        return agentRepository.searchByTerm(term.term(), pageable).map(AgentEntity::toDomain);
     }
 
     @Override

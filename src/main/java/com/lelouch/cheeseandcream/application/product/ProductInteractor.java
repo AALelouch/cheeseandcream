@@ -13,6 +13,7 @@ public class ProductInteractor implements ProductUseCase {
 
     private final FindProductByIdQuery findProductByIdQuery;
     private final FindProductsByAgentIdQuery findProductsByAgentIdQuery;
+    private final SearchProductsByTermQuery searchProductsByTermQuery;
     private final FindProductCategoryById findProductCategoryById;
     private final FindProductAgentById findProductAgentById;
     private final ExistsProductWithNameQuery existsProductWithNameQuery;
@@ -22,6 +23,7 @@ public class ProductInteractor implements ProductUseCase {
 
     public ProductInteractor(FindProductByIdQuery findProductByIdQuery,
             FindProductsByAgentIdQuery findProductsByAgentIdQuery,
+            SearchProductsByTermQuery searchProductsByTermQuery,
             FindProductCategoryById findProductCategoryById,
             FindProductAgentById findProductAgentById,
             ExistsProductWithNameQuery existsProductWithNameQuery,
@@ -30,6 +32,7 @@ public class ProductInteractor implements ProductUseCase {
             ProductOutputPort productOutputPort) {
         this.findProductByIdQuery = findProductByIdQuery;
         this.findProductsByAgentIdQuery = findProductsByAgentIdQuery;
+        this.searchProductsByTermQuery = searchProductsByTermQuery;
         this.findProductCategoryById = findProductCategoryById;
         this.findProductAgentById = findProductAgentById;
         this.existsProductWithNameQuery = existsProductWithNameQuery;
@@ -56,6 +59,12 @@ public class ProductInteractor implements ProductUseCase {
     @Transactional(readOnly = true)
     public Page<ProductResponse> getProductsByAgentId(Long agentId, Pageable pageable) {
         return productOutputPort.mapToResponse(findProductsByAgentIdQuery.findByAgentId(agentId, pageable));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> searchProducts(Long agentId, ProductTermRequest term, Pageable pageable) {
+        return productOutputPort.mapToResponse(searchProductsByTermQuery.searchByTerm(agentId, term, pageable));
     }
 
     @Override

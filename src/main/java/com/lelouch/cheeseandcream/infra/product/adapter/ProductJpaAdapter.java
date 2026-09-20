@@ -7,6 +7,8 @@ import com.lelouch.cheeseandcream.application.product.FindProductByIdQuery;
 import com.lelouch.cheeseandcream.application.product.FindProductCategoryById;
 import com.lelouch.cheeseandcream.application.product.FindProductsByAgentIdQuery;
 import com.lelouch.cheeseandcream.application.product.SaveProductCommand;
+import com.lelouch.cheeseandcream.application.product.ProductTermRequest;
+import com.lelouch.cheeseandcream.application.product.SearchProductsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentEntity;
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductJpaAdapter implements FindProductByIdQuery, FindProductsByAgentIdQuery,
         FindProductCategoryById, FindProductAgentById, ExistsProductWithNameQuery,
-        SaveProductCommand, DeactivateProductCommand {
+        SearchProductsByTermQuery, SaveProductCommand, DeactivateProductCommand {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -44,6 +46,11 @@ public class ProductJpaAdapter implements FindProductByIdQuery, FindProductsByAg
     @Override
     public Page<Product> findByAgentId(Long agentId, Pageable pageable) {
         return productRepository.findByAgentEntityIdAndActiveIsTrue(agentId, pageable).map(ProductEntity::toDomain);
+    }
+
+    @Override
+    public Page<Product> searchByTerm(Long agentId, ProductTermRequest term, Pageable pageable) {
+        return productRepository.searchByAgentIdAndName(agentId, term.term(), pageable).map(ProductEntity::toDomain);
     }
 
     @Override

@@ -19,6 +19,21 @@ public interface FinancialOperationRepository extends JpaRepository<FinancialOpe
     })
     Page<FinancialOperationEntity> findAllByAgentEntityIdAndActiveIsTrue(Long idAgent, Pageable pageable);
 
+    @EntityGraph(attributePaths = {
+            "agentEntity",
+            "products",
+            "products.productEntity",
+            "products.productEntity.categoryEntity"
+    })
+    @Query("""
+            SELECT f FROM FinancialOperationEntity f
+            WHERE f.active = true
+              AND f.agentEntity.id = :agentId
+              AND LOWER(f.concept) LIKE LOWER(CONCAT('%', :term, '%'))
+            """)
+    Page<FinancialOperationEntity> searchByAgentIdAndConcept(@Param("agentId") Long agentId,
+            @Param("term") String term, Pageable pageable);
+
     @Query("SELECT SUM(t.total) FROM FinancialOperationEntity t WHERE t.active = true " +
             "AND t.creationDate >= :startDate AND t.creationDate < :endDate AND t.operationType = 'SALE'")
     Double sumRevenueByTimeRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);

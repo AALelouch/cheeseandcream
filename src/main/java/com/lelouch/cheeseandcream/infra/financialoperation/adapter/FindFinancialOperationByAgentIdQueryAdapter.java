@@ -1,6 +1,8 @@
 package com.lelouch.cheeseandcream.infra.financialoperation.adapter;
 
 import com.lelouch.cheeseandcream.application.financialoperation.FindFinancialOperationByAgentIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationTermRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationEntity;
 import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationRepository;
@@ -9,7 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FindFinancialOperationByAgentIdQueryAdapter implements FindFinancialOperationByAgentIdQuery {
+public class FindFinancialOperationByAgentIdQueryAdapter implements FindFinancialOperationByAgentIdQuery,
+        SearchFinancialOperationsByTermQuery {
 
     private final FinancialOperationRepository financialOperationRepository;
 
@@ -21,6 +24,13 @@ public class FindFinancialOperationByAgentIdQueryAdapter implements FindFinancia
     @Override
     public Page<FinancialOperation> findByAgentId(Long idAgent, Pageable pageable){
         return financialOperationRepository.findAllByAgentEntityIdAndActiveIsTrue(idAgent, pageable).map(FinancialOperationEntity::toDomain);
+    }
+
+    @Override
+    public Page<FinancialOperation> searchByTerm(Long agentId, FinancialOperationTermRequest term,
+            Pageable pageable) {
+        return financialOperationRepository.searchByAgentIdAndConcept(agentId, term.term(), pageable)
+                .map(FinancialOperationEntity::toDomain);
     }
 
 }

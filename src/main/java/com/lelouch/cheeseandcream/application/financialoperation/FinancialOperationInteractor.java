@@ -17,16 +17,20 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
 
     private final SaveFinancialOperationCommand saveFinancialOperationCommand;
     private final FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery;
+    private final SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery;
     private final FindAgentById findAgentById;
     private final FindProductsById findProductsById;
     private final FinancialOperationOutputPort financialOperationOutputPort;
 
     public FinancialOperationInteractor(SaveFinancialOperationCommand saveFinancialOperationCommand, FindAgentById findAgentById,
-            FindProductsById findProductsById, FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery, FinancialOperationOutputPort financialOperationOutputPort) {
+            FindProductsById findProductsById, FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery,
+            SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery,
+            FinancialOperationOutputPort financialOperationOutputPort) {
         this.saveFinancialOperationCommand = saveFinancialOperationCommand;
         this.findAgentById = findAgentById;
         this.findProductsById = findProductsById;
         this.findFinancialOperationByAgentIdQuery = findFinancialOperationByAgentIdQuery;
+        this.searchFinancialOperationsByTermQuery = searchFinancialOperationsByTermQuery;
         this.financialOperationOutputPort = financialOperationOutputPort;
     }
 
@@ -68,5 +72,12 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
     @Override
     public Page<FinancialOperationResponse> getOperationsByAgentId(Long idAgent, Pageable pageable) {
         return financialOperationOutputPort.mapToResponse(findFinancialOperationByAgentIdQuery.findByAgentId(idAgent, pageable));
+    }
+
+    @Override
+    public Page<FinancialOperationResponse> searchOperations(Long agentId, FinancialOperationTermRequest term,
+            Pageable pageable) {
+        return financialOperationOutputPort.mapToResponse(
+                searchFinancialOperationsByTermQuery.searchByTerm(agentId, term, pageable));
     }
 }

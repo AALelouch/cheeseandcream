@@ -2,6 +2,7 @@ package com.lelouch.cheeseandcream.infra.financialoperation;
 
 import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationTermRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationUseCase;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,12 @@ public class FinancialOperationController {
     @GetMapping("/agent/{idAgent}")
     public ResponseEntity<Iterable<FinancialOperationResponse>> getFinancialOperationsByAgentId(@PathVariable Long idAgent, Pageable pageable) {
         return ResponseEntity.ok(financialOperationUseCase.getOperationsByAgentId(idAgent, pageable));
+    }
+
+    @PostMapping("/agent/{idAgent}/search")
+    public ResponseEntity<Iterable<FinancialOperationResponse>> searchFinancialOperations(@PathVariable Long idAgent,
+            @RequestBody FinancialOperationTermRequest term, Pageable pageable) {
+        return ResponseEntity.ok(financialOperationUseCase.searchOperations(idAgent, term, pageable));
     }
 
 }

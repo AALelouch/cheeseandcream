@@ -23,13 +23,18 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String apiKey = "";
 
         if (authHeader != null && authHeader.startsWith("Basic ")) {
-            String apiKey = authHeader.substring("Basic ".length()).trim();
+            apiKey = authHeader.substring("Basic ".length()).trim();
+        }
 
-            if (apiKey.equals(API_KEY)) {
-                return true;
-            }
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            apiKey = authHeader.substring("Bearer ".length()).trim();
+        }
+
+        if (apiKey.equals(API_KEY)) {
+            return true;
         }
 
         response.setHeader(HttpHeaders.WWW_AUTHENTICATE, "Basic realm=\"" + REALM + "\"");

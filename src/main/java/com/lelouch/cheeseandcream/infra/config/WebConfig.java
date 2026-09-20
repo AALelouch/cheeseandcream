@@ -33,4 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/swagger-ui/**", "/v3/api-docs/**", "/api/login");
     }
+
+
+
 }

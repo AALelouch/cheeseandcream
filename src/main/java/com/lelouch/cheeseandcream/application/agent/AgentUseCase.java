@@ -10,5 +10,6 @@ public interface AgentUseCase {
     void deleteAgent(Long agentId);
     AgentResponse getAgent(Long agentId);
     Page<AgentResponse> getAllAgents(Pageable pageable);
-    Page<AgentResponse> searchAgents(String term, Pageable pageable);
+    Page<AgentResponse> getAgentsWithProducts(Pageable pageable);
+    Page<AgentResponse> searchAgents(AgentTermRequest term, Pageable pageable);
 }
