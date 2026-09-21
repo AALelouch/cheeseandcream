@@ -1,5 +1,7 @@
 package com.lelouch.cheeseandcream.application.identificationtype;
 
+import com.lelouch.cheeseandcream.application.identificationtype.dto.IdentificationTypeRequest;
+import com.lelouch.cheeseandcream.application.identificationtype.dto.IdentificationTypeResponse;
 import java.util.List;
 
 public interface IdentificationTypeUseCase {

@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.user.adapter;
 
-import com.lelouch.cheeseandcream.application.user.PasswordEncoderPort;
+import com.lelouch.cheeseandcream.application.user.command.PasswordEncoderPort;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import org.springframework.stereotype.Service;

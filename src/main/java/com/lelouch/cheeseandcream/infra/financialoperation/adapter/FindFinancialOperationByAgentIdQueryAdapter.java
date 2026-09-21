@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.infra.financialoperation.adapter;
 
-import com.lelouch.cheeseandcream.application.financialoperation.FindFinancialOperationByAgentIdQuery;
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationTermRequest;
-import com.lelouch.cheeseandcream.application.financialoperation.SearchFinancialOperationsByTermQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindFinancialOperationByAgentIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationEntity;
 import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationRepository;

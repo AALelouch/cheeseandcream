@@ -1,9 +1,9 @@
 package com.lelouch.cheeseandcream.infra.user.adapter;
 
-import com.lelouch.cheeseandcream.application.user.DeleteUserCommand;
-import com.lelouch.cheeseandcream.application.user.FindUserById;
-import com.lelouch.cheeseandcream.application.user.FindUserByUsername;
-import com.lelouch.cheeseandcream.application.user.SaveUserCommand;
+import com.lelouch.cheeseandcream.application.user.command.DeleteUserCommand;
+import com.lelouch.cheeseandcream.application.user.query.FindUserById;
+import com.lelouch.cheeseandcream.application.user.query.FindUserByUsername;
+import com.lelouch.cheeseandcream.application.user.command.SaveUserCommand;
 import com.lelouch.cheeseandcream.domain.User;
 import com.lelouch.cheeseandcream.infra.user.persistence.UserEntity;
 import com.lelouch.cheeseandcream.infra.user.persistence.UserRepository;

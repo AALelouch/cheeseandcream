@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.dashboard.adapter;
 
-import com.lelouch.cheeseandcream.application.dashboard.AgentBalanceQuery;
+import com.lelouch.cheeseandcream.application.dashboard.query.AgentBalanceQuery;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentRepository;
 import org.springframework.stereotype.Service;
 

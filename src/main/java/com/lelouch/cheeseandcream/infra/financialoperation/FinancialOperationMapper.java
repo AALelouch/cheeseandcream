@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.financialoperation;
 
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.mapstruct.Mapper;

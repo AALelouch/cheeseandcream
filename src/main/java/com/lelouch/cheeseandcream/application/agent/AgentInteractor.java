@@ -1,5 +1,15 @@
 package com.lelouch.cheeseandcream.application.agent;
 
+import com.lelouch.cheeseandcream.application.agent.command.DeactivateAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.command.SaveAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
+import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindActiveAgentsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.SearchAgentsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;

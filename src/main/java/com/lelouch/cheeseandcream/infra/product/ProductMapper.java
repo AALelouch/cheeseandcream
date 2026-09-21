@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.product;
 
-import com.lelouch.cheeseandcream.application.product.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.domain.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

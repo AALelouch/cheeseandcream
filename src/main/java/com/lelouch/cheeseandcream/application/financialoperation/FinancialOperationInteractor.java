@@ -1,5 +1,13 @@
 package com.lelouch.cheeseandcream.application.financialoperation;
 
+import com.lelouch.cheeseandcream.application.financialoperation.command.SaveFinancialOperationCommand;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindFinancialOperationByAgentIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindProductsByIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.Product;
@@ -18,17 +26,17 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
     private final SaveFinancialOperationCommand saveFinancialOperationCommand;
     private final FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery;
     private final SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery;
-    private final FindAgentById findAgentById;
-    private final FindProductsById findProductsById;
+    private final FindAgentByIdQuery findAgentByIdQuery;
+    private final FindProductsByIdQuery findProductsByIdQuery;
     private final FinancialOperationOutputPort financialOperationOutputPort;
 
-    public FinancialOperationInteractor(SaveFinancialOperationCommand saveFinancialOperationCommand, FindAgentById findAgentById,
-            FindProductsById findProductsById, FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery,
+    public FinancialOperationInteractor(SaveFinancialOperationCommand saveFinancialOperationCommand, FindAgentByIdQuery findAgentByIdQuery,
+            FindProductsByIdQuery findProductsByIdQuery, FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery,
             SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery,
             FinancialOperationOutputPort financialOperationOutputPort) {
         this.saveFinancialOperationCommand = saveFinancialOperationCommand;
-        this.findAgentById = findAgentById;
-        this.findProductsById = findProductsById;
+        this.findAgentByIdQuery = findAgentByIdQuery;
+        this.findProductsByIdQuery = findProductsByIdQuery;
         this.findFinancialOperationByAgentIdQuery = findFinancialOperationByAgentIdQuery;
         this.searchFinancialOperationsByTermQuery = searchFinancialOperationsByTermQuery;
         this.financialOperationOutputPort = financialOperationOutputPort;
@@ -40,7 +48,7 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
 
 
 
-        Agent agent = findAgentById.findById(financialOperationRequest.getIdAgent())
+        Agent agent = findAgentByIdQuery.findById(financialOperationRequest.getIdAgent())
                 .orElseThrow(() -> new NotFoundException("AgentEntity not found with id: " + financialOperationRequest.getIdAgent()));
 
         FinancialOperation financialOperation = FinancialOperation
@@ -59,7 +67,7 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
             }
 
             List<Long> productIds = financialOperationRequest.getProducts().keySet().stream().toList();
-            List<Product> products = findProductsById.findAllById(productIds);
+            List<Product> products = findProductsByIdQuery.findAllById(productIds);
 
             financialOperation.performProductBasedOperation(products, financialOperationRequest.getProducts());
         }else{

@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.application.category;
 
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
 import java.util.List;
 
 public interface CategoryUseCase {

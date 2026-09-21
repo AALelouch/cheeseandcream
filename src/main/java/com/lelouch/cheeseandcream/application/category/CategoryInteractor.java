@@ -1,5 +1,10 @@
 package com.lelouch.cheeseandcream.application.category;
 
+import com.lelouch.cheeseandcream.application.category.command.SaveCategoryCommand;
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
+import com.lelouch.cheeseandcream.application.category.query.CategoryNameExistsQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindAllCategoriesQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindCategoryByIdQuery;
 import com.lelouch.cheeseandcream.domain.Category;
 import com.lelouch.cheeseandcream.domain.ValidatorUtils;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;

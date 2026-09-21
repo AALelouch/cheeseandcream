@@ -1,9 +1,9 @@
 package com.lelouch.cheeseandcream.infra.identificationtype.adapter;
 
-import com.lelouch.cheeseandcream.application.identificationtype.FindAllIdentificationTypesQuery;
-import com.lelouch.cheeseandcream.application.identificationtype.FindIdentificationTypeByIdQuery;
-import com.lelouch.cheeseandcream.application.identificationtype.IdentificationTypeNameExistsQuery;
-import com.lelouch.cheeseandcream.application.identificationtype.SaveIdentificationTypeCommand;
+import com.lelouch.cheeseandcream.application.identificationtype.query.FindAllIdentificationTypesQuery;
+import com.lelouch.cheeseandcream.application.identificationtype.query.FindIdentificationTypeByIdQuery;
+import com.lelouch.cheeseandcream.application.identificationtype.query.IdentificationTypeNameExistsQuery;
+import com.lelouch.cheeseandcream.application.identificationtype.command.SaveIdentificationTypeCommand;
 import com.lelouch.cheeseandcream.domain.IdentificationType;
 import com.lelouch.cheeseandcream.infra.identificationtype.IdentificationTypeJpaMapper;
 import com.lelouch.cheeseandcream.infra.identificationtype.persistence.IdentificationTypeRepository;

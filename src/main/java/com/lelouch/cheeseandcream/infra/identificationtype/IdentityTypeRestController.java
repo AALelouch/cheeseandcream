@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.infra.identificationtype;
 
 import com.lelouch.cheeseandcream.application.identificationtype.IdentificationTypeUseCase;
-import com.lelouch.cheeseandcream.application.identificationtype.IdentificationTypeResponse;
-import com.lelouch.cheeseandcream.application.identificationtype.IdentificationTypeRequest;
+import com.lelouch.cheeseandcream.application.identificationtype.dto.IdentificationTypeResponse;
+import com.lelouch.cheeseandcream.application.identificationtype.dto.IdentificationTypeRequest;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

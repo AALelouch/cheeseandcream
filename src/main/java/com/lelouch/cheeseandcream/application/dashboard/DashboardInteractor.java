@@ -1,5 +1,8 @@
 package com.lelouch.cheeseandcream.application.dashboard;
 
+import com.lelouch.cheeseandcream.application.dashboard.dto.DashboardResponse;
+import com.lelouch.cheeseandcream.application.dashboard.query.AgentBalanceQuery;
+import com.lelouch.cheeseandcream.application.dashboard.query.FinancialMetricsQuery;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;

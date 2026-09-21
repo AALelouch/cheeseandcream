@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.lelouch.cheeseandcream.application.category.command.SaveCategoryCommand;
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
+import com.lelouch.cheeseandcream.application.category.query.CategoryNameExistsQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindAllCategoriesQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindCategoryByIdQuery;
 import com.lelouch.cheeseandcream.domain.Category;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
@@ -43,8 +48,8 @@ class CategoryInteractorTest {
         assertThrows(NotFoundException.class, () -> interactor.deleteCategory(99L));
     }
 
-    private static final class Store implements SaveCategoryCommand, FindCategoryByIdQuery,
-            FindAllCategoriesQuery, CategoryNameExistsQuery {
+    private static final class Store implements SaveCategoryCommand, FindCategoryByIdQuery, FindAllCategoriesQuery,
+            CategoryNameExistsQuery {
         private final Category existing;
         private final boolean duplicate;
         private Category saved;

@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.financialoperation.adapter;
 
 import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationOutputPort;
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationMapper;
 import org.springframework.data.domain.Page;

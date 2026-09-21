@@ -1,5 +1,16 @@
 package com.lelouch.cheeseandcream.application.product;
 
+import com.lelouch.cheeseandcream.application.product.command.DeactivateProductCommand;
+import com.lelouch.cheeseandcream.application.product.command.SaveProductCommand;
+import com.lelouch.cheeseandcream.application.product.dto.ProductRequest;
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
+import com.lelouch.cheeseandcream.application.product.query.ExistsProductWithNameQuery;
+import com.lelouch.cheeseandcream.application.product.query.FindProductAgentById;
+import com.lelouch.cheeseandcream.application.product.query.FindProductByIdQuery;
+import com.lelouch.cheeseandcream.application.product.query.FindProductCategoryById;
+import com.lelouch.cheeseandcream.application.product.query.FindProductsByAgentIdQuery;
+import com.lelouch.cheeseandcream.application.product.query.SearchProductsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.domain.ValidatorUtils;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;

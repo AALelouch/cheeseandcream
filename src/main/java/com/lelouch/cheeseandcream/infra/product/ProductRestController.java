@@ -1,9 +1,9 @@
 package com.lelouch.cheeseandcream.infra.product;
 
 import com.lelouch.cheeseandcream.application.product.ProductUseCase;
-import com.lelouch.cheeseandcream.application.product.ProductRequest;
-import com.lelouch.cheeseandcream.application.product.ProductResponse;
-import com.lelouch.cheeseandcream.application.product.ProductTermRequest;
+import com.lelouch.cheeseandcream.application.product.dto.ProductRequest;
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

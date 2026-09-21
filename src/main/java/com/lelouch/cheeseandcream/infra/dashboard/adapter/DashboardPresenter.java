@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.dashboard.adapter;
 
 import com.lelouch.cheeseandcream.application.dashboard.DashboardOutputPort;
-import com.lelouch.cheeseandcream.application.dashboard.DashboardResponse;
+import com.lelouch.cheeseandcream.application.dashboard.dto.DashboardResponse;
 import org.springframework.stereotype.Service;
 
 @Service

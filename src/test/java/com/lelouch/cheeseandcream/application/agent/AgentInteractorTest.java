@@ -6,6 +6,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.lelouch.cheeseandcream.application.agent.command.SaveAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
+import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import org.junit.jupiter.api.Test;

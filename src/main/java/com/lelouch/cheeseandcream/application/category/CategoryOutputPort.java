@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.application.category;
 
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
 import com.lelouch.cheeseandcream.domain.Category;
 import java.util.List;
 

@@ -1,13 +1,13 @@
 package com.lelouch.cheeseandcream.infra.agent.adapter;
 
-import com.lelouch.cheeseandcream.application.agent.AgentExistsQuery;
-import com.lelouch.cheeseandcream.application.agent.AgentTermRequest;
-import com.lelouch.cheeseandcream.application.agent.DeactivateAgentCommand;
-import com.lelouch.cheeseandcream.application.agent.FindActiveAgentsQuery;
-import com.lelouch.cheeseandcream.application.agent.FindAgentsWithProductsQuery;
-import com.lelouch.cheeseandcream.application.agent.FindAgentByIdQuery;
-import com.lelouch.cheeseandcream.application.agent.SaveAgentCommand;
-import com.lelouch.cheeseandcream.application.agent.SearchAgentsByTermQuery;
+import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
+import com.lelouch.cheeseandcream.application.agent.command.DeactivateAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.query.FindActiveAgentsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.agent.command.SaveAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.query.SearchAgentsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentEntity;

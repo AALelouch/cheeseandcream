@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.product.adapter;
 
-import com.lelouch.cheeseandcream.application.product.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.application.product.ProductOutputPort;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.infra.product.ProductMapper;

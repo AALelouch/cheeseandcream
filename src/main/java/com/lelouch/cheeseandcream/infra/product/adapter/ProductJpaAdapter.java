@@ -1,14 +1,14 @@
 package com.lelouch.cheeseandcream.infra.product.adapter;
 
-import com.lelouch.cheeseandcream.application.product.DeactivateProductCommand;
-import com.lelouch.cheeseandcream.application.product.ExistsProductWithNameQuery;
-import com.lelouch.cheeseandcream.application.product.FindProductAgentById;
-import com.lelouch.cheeseandcream.application.product.FindProductByIdQuery;
-import com.lelouch.cheeseandcream.application.product.FindProductCategoryById;
-import com.lelouch.cheeseandcream.application.product.FindProductsByAgentIdQuery;
-import com.lelouch.cheeseandcream.application.product.SaveProductCommand;
-import com.lelouch.cheeseandcream.application.product.ProductTermRequest;
-import com.lelouch.cheeseandcream.application.product.SearchProductsByTermQuery;
+import com.lelouch.cheeseandcream.application.product.command.DeactivateProductCommand;
+import com.lelouch.cheeseandcream.application.product.query.ExistsProductWithNameQuery;
+import com.lelouch.cheeseandcream.application.product.query.FindProductAgentById;
+import com.lelouch.cheeseandcream.application.product.query.FindProductByIdQuery;
+import com.lelouch.cheeseandcream.application.product.query.FindProductCategoryById;
+import com.lelouch.cheeseandcream.application.product.query.FindProductsByAgentIdQuery;
+import com.lelouch.cheeseandcream.application.product.command.SaveProductCommand;
+import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
+import com.lelouch.cheeseandcream.application.product.query.SearchProductsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentEntity;

@@ -2,6 +2,11 @@ package com.lelouch.cheeseandcream.application.identificationtype;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.lelouch.cheeseandcream.application.identificationtype.command.SaveIdentificationTypeCommand;
+import com.lelouch.cheeseandcream.application.identificationtype.dto.IdentificationTypeRequest;
+import com.lelouch.cheeseandcream.application.identificationtype.query.FindAllIdentificationTypesQuery;
+import com.lelouch.cheeseandcream.application.identificationtype.query.FindIdentificationTypeByIdQuery;
+import com.lelouch.cheeseandcream.application.identificationtype.query.IdentificationTypeNameExistsQuery;
 import com.lelouch.cheeseandcream.domain.IdentificationType;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +26,8 @@ class IdentificationTypeInteractorTest {
         assertEquals(3L, store.saved.id());
     }
 
-    private static final class RecordingStore implements SaveIdentificationTypeCommand,
-            FindIdentificationTypeByIdQuery, FindAllIdentificationTypesQuery, IdentificationTypeNameExistsQuery {
+    private static final class RecordingStore implements SaveIdentificationTypeCommand, FindIdentificationTypeByIdQuery,
+            FindAllIdentificationTypesQuery, IdentificationTypeNameExistsQuery {
         private final IdentificationType existing;
         private IdentificationType saved;
 

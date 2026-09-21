@@ -1,10 +1,9 @@
 package com.lelouch.cheeseandcream.infra.agent;
 
 import com.lelouch.cheeseandcream.application.agent.AgentUseCase;
-import com.lelouch.cheeseandcream.application.agent.AgentRequest;
-import com.lelouch.cheeseandcream.application.agent.AgentResponse;
-import com.lelouch.cheeseandcream.application.agent.AgentTermRequest;
-import java.util.regex.Pattern;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.category.adapter;
 
 import com.lelouch.cheeseandcream.application.category.CategoryOutputPort;
-import com.lelouch.cheeseandcream.application.category.CategoryResponse;
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
 import com.lelouch.cheeseandcream.domain.Category;
 import java.util.List;
 import org.springframework.stereotype.Service;

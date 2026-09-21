@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.category;
 
-import com.lelouch.cheeseandcream.application.category.CategoryResponse;
+import com.lelouch.cheeseandcream.application.category.dto.CategoryResponse;
 import com.lelouch.cheeseandcream.application.category.CategoryUseCase;
 import java.util.List;
 import org.springframework.http.HttpStatus;

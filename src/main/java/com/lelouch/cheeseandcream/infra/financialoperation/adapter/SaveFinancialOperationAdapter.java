@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.financialoperation.adapter;
 
-import com.lelouch.cheeseandcream.application.financialoperation.SaveFinancialOperationCommand;
+import com.lelouch.cheeseandcream.application.financialoperation.command.SaveFinancialOperationCommand;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentEntity;

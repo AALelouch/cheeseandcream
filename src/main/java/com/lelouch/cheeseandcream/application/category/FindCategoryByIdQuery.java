@@ -1,9 +1,0 @@
-package com.lelouch.cheeseandcream.application.category;
-
-import com.lelouch.cheeseandcream.domain.Category;
-import java.util.Optional;
-
-public interface FindCategoryByIdQuery {
-
-    Optional<Category> findById(Long id);
-}

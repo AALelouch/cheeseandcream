@@ -3,6 +3,11 @@ package com.lelouch.cheeseandcream.application.user;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.lelouch.cheeseandcream.application.user.command.DeleteUserCommand;
+import com.lelouch.cheeseandcream.application.user.command.PasswordEncoderPort;
+import com.lelouch.cheeseandcream.application.user.command.SaveUserCommand;
+import com.lelouch.cheeseandcream.application.user.query.FindUserById;
+import com.lelouch.cheeseandcream.application.user.query.FindUserByUsername;
 import com.lelouch.cheeseandcream.domain.User;
 import com.lelouch.cheeseandcream.domain.exception.UnauthorizedException;
 import java.util.HashMap;
@@ -48,8 +53,7 @@ class UserInteractorTest {
         return new UserInteractor(users, users, users, users, encoder, () -> "api-key", LoginResponse::new);
     }
 
-    private static final class InMemoryUsers implements SaveUserCommand, DeleteUserCommand,
-            FindUserById, FindUserByUsername {
+    private static final class InMemoryUsers implements SaveUserCommand, DeleteUserCommand, FindUserById, FindUserByUsername {
         private final Map<Long, User> users = new HashMap<>();
 
         @Override

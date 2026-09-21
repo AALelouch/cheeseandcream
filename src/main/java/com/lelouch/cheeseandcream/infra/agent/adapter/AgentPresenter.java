@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.agent.adapter;
 
 import com.lelouch.cheeseandcream.application.agent.AgentOutputPort;
-import com.lelouch.cheeseandcream.application.agent.AgentResponse;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
 import com.lelouch.cheeseandcream.domain.Agent;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

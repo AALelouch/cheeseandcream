@@ -7,6 +7,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.lelouch.cheeseandcream.application.financialoperation.command.SaveFinancialOperationCommand;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.OperationType;
@@ -24,7 +30,7 @@ class FinancialOperationInteractorTest {
     @Test
     void addSingleAmountSalePersistsTheOperationAndUpdatesTheAgentBalance() {
         Agent agent = Agent.create(5L, "Cliente", "c@example.com", "1", "Calle", 100.0, "123");
-        FindAgentById findAgent = id -> Optional.of(agent);
+        FindAgentByIdQuery findAgent = id -> Optional.of(agent);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
         FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, findAgent, null, null, null, null);
         FinancialOperationRequest request = new FinancialOperationRequest(new HashMap<>(), 5L, 40.0, "Factura", OperationType.SALE);

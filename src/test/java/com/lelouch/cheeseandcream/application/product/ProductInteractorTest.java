@@ -5,6 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
+import com.lelouch.cheeseandcream.application.product.query.SearchProductsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;

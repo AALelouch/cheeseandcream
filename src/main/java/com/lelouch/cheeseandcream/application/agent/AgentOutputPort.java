@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.application.agent;
 
+import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
 import com.lelouch.cheeseandcream.domain.Agent;
 import org.springframework.data.domain.Page;
 

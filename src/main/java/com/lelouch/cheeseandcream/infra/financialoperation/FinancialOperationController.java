@@ -1,8 +1,8 @@
 package com.lelouch.cheeseandcream.infra.financialoperation;
 
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationRequest;
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationResponse;
-import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationTermRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.FinancialOperationUseCase;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;

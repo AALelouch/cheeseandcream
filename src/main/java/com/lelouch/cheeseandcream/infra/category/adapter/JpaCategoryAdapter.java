@@ -1,9 +1,9 @@
 package com.lelouch.cheeseandcream.infra.category.adapter;
 
-import com.lelouch.cheeseandcream.application.category.CategoryNameExistsQuery;
-import com.lelouch.cheeseandcream.application.category.FindAllCategoriesQuery;
-import com.lelouch.cheeseandcream.application.category.FindCategoryByIdQuery;
-import com.lelouch.cheeseandcream.application.category.SaveCategoryCommand;
+import com.lelouch.cheeseandcream.application.category.query.CategoryNameExistsQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindAllCategoriesQuery;
+import com.lelouch.cheeseandcream.application.category.query.FindCategoryByIdQuery;
+import com.lelouch.cheeseandcream.application.category.command.SaveCategoryCommand;
 import com.lelouch.cheeseandcream.domain.Category;
 import com.lelouch.cheeseandcream.infra.category.CategoryJpaMapper;
 import com.lelouch.cheeseandcream.infra.category.persistence.CategoryRepository;

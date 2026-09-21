@@ -1,6 +1,6 @@
 package com.lelouch.cheeseandcream.infra.user.adapter;
 
-import com.lelouch.cheeseandcream.application.user.ApiKeyProvider;
+import com.lelouch.cheeseandcream.application.user.query.ApiKeyProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
