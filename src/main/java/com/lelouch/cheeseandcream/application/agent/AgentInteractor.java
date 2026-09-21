@@ -8,6 +8,7 @@ import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
 import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindActiveAgentsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsByTermQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.SearchAgentsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
@@ -31,12 +32,13 @@ public class AgentInteractor implements AgentUseCase {
     private final FindAgentsWithProductsQuery findAgentsWithProductsQuery;
     private final SearchAgentsByTermQuery searchAgentsByTermQuery;
     private final AgentExistsQuery agentExistsQuery;
+    private final FindAgentsWithProductsByTermQuery findAgentsWithProductsByTermQuery;
     private final AgentOutputPort agentOutputPort;
 
     public AgentInteractor(SaveAgentCommand saveAgentCommand, DeactivateAgentCommand deactivateAgentCommand,
             FindAgentByIdQuery findAgentByIdQuery, FindActiveAgentsQuery findActiveAgentsQuery,
             FindAgentsWithProductsQuery findAgentsWithProductsQuery,
-            SearchAgentsByTermQuery searchAgentsByTermQuery, AgentExistsQuery agentExistsQuery,
+            SearchAgentsByTermQuery searchAgentsByTermQuery, AgentExistsQuery agentExistsQuery, FindAgentsWithProductsByTermQuery findAgentsWithProductsByTermQuery,
             AgentOutputPort agentOutputPort) {
         this.saveAgentCommand = saveAgentCommand;
         this.deactivateAgentCommand = deactivateAgentCommand;
@@ -45,6 +47,7 @@ public class AgentInteractor implements AgentUseCase {
         this.findAgentsWithProductsQuery = findAgentsWithProductsQuery;
         this.searchAgentsByTermQuery = searchAgentsByTermQuery;
         this.agentExistsQuery = agentExistsQuery;
+        this.findAgentsWithProductsByTermQuery = findAgentsWithProductsByTermQuery;
         this.agentOutputPort = agentOutputPort;
     }
 
@@ -104,6 +107,11 @@ public class AgentInteractor implements AgentUseCase {
     @Override
     public Page<AgentResponse> searchAgents(AgentTermRequest term, Pageable pageable) {
         return agentOutputPort.mapToResponse(searchAgentsByTermQuery.searchByTerm(term, pageable));
+    }
+
+    @Override
+    public Page<AgentResponse> getAgentsWithProductsByTerm(AgentTermRequest term, Pageable pageable) {
+        return agentOutputPort.mapToResponse(findAgentsWithProductsByTermQuery.search(term, pageable));
     }
 
     private void validateUniqueData(AgentRequest request, Long agentId) {

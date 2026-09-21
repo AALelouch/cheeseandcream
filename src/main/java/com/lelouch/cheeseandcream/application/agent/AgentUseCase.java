@@ -15,4 +15,5 @@ public interface AgentUseCase {
     Page<AgentResponse> getAllAgents(Pageable pageable);
     Page<AgentResponse> getAgentsWithProducts(Pageable pageable);
     Page<AgentResponse> searchAgents(AgentTermRequest term, Pageable pageable);
+    Page<AgentResponse> getAgentsWithProductsByTerm(AgentTermRequest term, Pageable pageable);
 }

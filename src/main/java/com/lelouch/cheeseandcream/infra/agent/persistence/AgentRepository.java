@@ -76,6 +76,19 @@ public interface AgentRepository extends JpaRepository<AgentEntity, Long> {
        OR LOWER(a.identificationNumber) LIKE LOWER(CONCAT('%', :term, '%')))
 """)
     Page<AgentEntity> searchByTerm(@Param("term") String term, Pageable pageable);
+
+    @Query("""
+    SELECT a FROM AgentEntity a\s
+    WHERE a.active = true AND EXISTS (
+                  SELECT p.id FROM ProductEntity p
+                  WHERE p.agentEntity = a AND p.active = true
+              )\s
+      AND (LOWER(a.name) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.email) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.address) LIKE LOWER(CONCAT('%', :term, '%'))
+       OR LOWER(a.identificationNumber) LIKE LOWER(CONCAT('%', :term, '%')))
+""")
+    Page<AgentEntity> findActiveAgentsWithProductsByTerm(@Param("term") String term, Pageable pageable);
 }
 
 

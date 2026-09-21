@@ -53,6 +53,11 @@ public class AgentRestController {
         return new ResponseEntity<>(agentUseCase.getAgentsWithProducts(pageable), HttpStatus.OK);
     }
 
+    @PostMapping("/with-products/search")
+    public ResponseEntity<Iterable<AgentResponse>> getAgentsWithProductsByTerm(Pageable pageable, @RequestBody AgentTermRequest term) {
+        return new ResponseEntity<>(agentUseCase.getAgentsWithProductsByTerm(term, pageable), HttpStatus.OK);
+    }
+
     @PostMapping("/search")
     public ResponseEntity<Iterable<AgentResponse>> searchAgents(@RequestBody AgentTermRequest term, Pageable pageable) {
         return new ResponseEntity<>(agentUseCase.searchAgents(term, pageable), HttpStatus.OK);

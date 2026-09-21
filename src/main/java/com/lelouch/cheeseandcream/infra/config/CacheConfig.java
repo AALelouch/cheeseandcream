@@ -36,7 +36,13 @@ public class CacheConfig {
                         .maximumSize(6)
                         .build());
 
-        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, agentsById));
+        CaffeineCache categoriesCache = new CaffeineCache("categories",
+                Caffeine.newBuilder()
+                        .expireAfterWrite(60, TimeUnit.MINUTES)
+                        .maximumSize(6)
+                        .build());
+
+        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, agentsById, categoriesCache));
         return cacheManager;
     }
 

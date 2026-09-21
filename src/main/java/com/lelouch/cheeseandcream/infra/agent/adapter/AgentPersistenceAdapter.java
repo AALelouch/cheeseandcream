@@ -4,6 +4,7 @@ import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
 import com.lelouch.cheeseandcream.application.agent.command.DeactivateAgentCommand;
 import com.lelouch.cheeseandcream.application.agent.query.FindActiveAgentsQuery;
+import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsByTermQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindAgentByIdQuery;
 import com.lelouch.cheeseandcream.application.agent.command.SaveAgentCommand;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AgentPersistenceAdapter implements SaveAgentCommand, DeactivateAgentCommand, FindAgentByIdQuery,
-        FindActiveAgentsQuery, FindAgentsWithProductsQuery, SearchAgentsByTermQuery, AgentExistsQuery {
+        FindActiveAgentsQuery, FindAgentsWithProductsQuery, SearchAgentsByTermQuery, AgentExistsQuery, FindAgentsWithProductsByTermQuery {
 
     private final AgentRepository agentRepository;
     private final IdentificationTypeRepository identificationTypeRepository;
@@ -78,5 +79,10 @@ public class AgentPersistenceAdapter implements SaveAgentCommand, DeactivateAgen
             String identificationNumber, Long agentId) {
         return agentRepository.existsByNameOrEmailOrAddressOrIdentificationNumberAndIdNot(name, email, address,
                 identificationNumber, agentId);
+    }
+
+    @Override
+    public Page<Agent> search(AgentTermRequest term, Pageable pageable) {
+        return agentRepository.findActiveAgentsWithProductsByTerm(term.term(), pageable).map(AgentEntity::toDomain);
     }
 }

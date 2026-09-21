@@ -27,7 +27,7 @@ class AgentInteractorTest {
         SaveAgentCommand saveCommand = mock(SaveAgentCommand.class);
         AgentRequest request = new AgentRequest("Proveedor", "supplier@example.com", "1", "Calle", "0", 2L, "123");
         when(existsQuery.existsWithSameUniqueData("Proveedor", "supplier@example.com", "Calle", "123")).thenReturn(true);
-        AgentInteractor interactor = new AgentInteractor(saveCommand, null, null, null, null, null, existsQuery, null);
+        AgentInteractor interactor = new AgentInteractor(saveCommand, null, null, null, null, null, existsQuery, null, null);
 
         assertThrows(BadRequestException.class, () -> interactor.createAgent(request));
 
@@ -39,7 +39,7 @@ class AgentInteractorTest {
         AgentExistsQuery existsQuery = mock(AgentExistsQuery.class);
         SaveAgentCommand saveCommand = mock(SaveAgentCommand.class);
         AgentRequest request = new AgentRequest("Proveedor", "supplier@example.com", "1", "Calle", "not-a-number", 2L, "123");
-        AgentInteractor interactor = new AgentInteractor(saveCommand, null, null, null, null, null, existsQuery, null);
+        AgentInteractor interactor = new AgentInteractor(saveCommand, null, null, null, null, null, existsQuery, null, null);
 
         assertThrows(BadRequestException.class, () -> interactor.createAgent(request));
 
@@ -57,7 +57,7 @@ class AgentInteractorTest {
                 new AgentResponse(7L, "Supplier", "supplier@example.com", "123", "Address", 0.0, null, "900")));
         when(query.findAgentsWithProducts(pageable)).thenReturn(agents);
         when(outputPort.mapToResponse(agents)).thenReturn(responses);
-        AgentInteractor interactor = new AgentInteractor(null, null, null, null, query, null, null, outputPort);
+        AgentInteractor interactor = new AgentInteractor(null, null, null, null, query, null, null, null, outputPort);
 
         Page<AgentResponse> result = interactor.getAgentsWithProducts(pageable);
 
