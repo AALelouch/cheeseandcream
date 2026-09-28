@@ -16,6 +16,7 @@ import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFin
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.OperationType;
+import com.lelouch.cheeseandcream.domain.Role;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import java.util.HashMap;
 import java.util.Optional;
@@ -28,8 +29,8 @@ import org.springframework.data.domain.Pageable;
 class FinancialOperationInteractorTest {
 
     @Test
-    void addSingleAmountSalePersistsTheOperationAndUpdatesTheAgentBalance() {
-        Agent agent = Agent.create(5L, "Cliente", "c@example.com", "1", "Calle", 100.0, "123");
+    void addSingleAmountSalePersistsTheOperationAndIncreasesReceivables() {
+        Agent agent = clientWithReceivables(100.0);
         FindAgentByIdQuery findAgent = id -> Optional.of(agent);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
         FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, findAgent, null, null, null, null);
@@ -37,14 +38,15 @@ class FinancialOperationInteractorTest {
 
         interactor.addOperation(request);
 
-        assertEquals(60.0, agent.getBalance());
+        assertEquals(140.0, agent.getReceivables());
+        assertEquals(140.0, agent.getBalance());
         assertEquals(40.0, saveCommand.saved.getTotal());
         assertEquals(OperationType.SALE, saveCommand.saved.getOperationType());
     }
 
     @Test
     void addOperationRejectsAnAmountAlongsideProductsBeforePersisting() {
-        Agent agent = Agent.create(5L, "Cliente", "c@example.com", "1", "Calle", 100.0, "123");
+        Agent agent = clientWithReceivables(100.0);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
         FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, id -> Optional.of(agent),
                 ids -> java.util.List.of(), null, null, null);
@@ -74,6 +76,11 @@ class FinancialOperationInteractorTest {
 
         assertSame(responses, result);
         verify(query).searchByTerm(15L, term, pageable);
+    }
+
+    private Agent clientWithReceivables(double receivables) {
+        return Agent.create(5L, "Cliente", "c@example.com", "1", "Calle",
+                receivables, 0.0, Role.CLIENT, "123", 1L);
     }
 
     private static final class RecordingSaveCommand implements SaveFinancialOperationCommand {

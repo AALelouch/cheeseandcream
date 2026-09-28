@@ -8,7 +8,7 @@ import com.lelouch.cheeseandcream.infra.financialoperation.persistence.Financial
 import com.lelouch.cheeseandcream.infra.financialoperation.persistence.OperationProductEntity;
 import com.lelouch.cheeseandcream.infra.product.persistence.ProductEntity;
 import com.lelouch.cheeseandcream.infra.agent.persistence.AgentRepository;
-import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationRepository;
+import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationRepository;
 import com.lelouch.cheeseandcream.infra.product.persistence.ProductRepository;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,8 @@ public class SaveFinancialOperationAdapter implements SaveFinancialOperationComm
             throw new NotFoundException("One or more products not found with the provided ids.");
         }
 
-        managedAgent.setBalance(financialOperation.getAgent().getBalance());
+        managedAgent.setReceivables(financialOperation.getAgent().getReceivables());
+        managedAgent.setPayables(financialOperation.getAgent().getPayables());
         
         FinancialOperationEntity entity = new FinancialOperationEntity();
         entity.setAgentEntity(managedAgent);

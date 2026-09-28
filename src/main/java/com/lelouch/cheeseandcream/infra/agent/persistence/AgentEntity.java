@@ -1,10 +1,13 @@
 package com.lelouch.cheeseandcream.infra.agent.persistence;
 
 import com.lelouch.cheeseandcream.domain.Agent;
+import com.lelouch.cheeseandcream.domain.Role;
 import com.lelouch.cheeseandcream.infra.identificationtype.persistence.IdentificationTypeEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +40,12 @@ public class AgentEntity {
     private String phoneNumber;
     @Column(unique = true)
     private String address;
-    private Double balance = 0.0;
+    private Double receivables = 0.0;
+    private Double payables = 0.0;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(unique = true)
     private String identificationNumber;
     private boolean active = true;
@@ -70,7 +78,9 @@ public class AgentEntity {
                 this.email,
                 this.phoneNumber,
                 this.address,
-                this.balance,
+                this.receivables,
+                this.payables,
+                this.role,
                 this.identificationNumber,
                 this.identificationTypeEntity == null ? null : this.identificationTypeEntity.getId()
         );
@@ -83,7 +93,9 @@ public class AgentEntity {
         agentEntity.setEmail(agent.getEmail());
         agentEntity.setPhoneNumber(agent.getPhoneNumber());
         agentEntity.setAddress(agent.getAddress());
-        agentEntity.setBalance(agent.getBalance());
+        agentEntity.setReceivables(agent.getReceivables());
+        agentEntity.setPayables(agent.getPayables());
+        agentEntity.setRole(agent.getRole());
         agentEntity.setIdentificationNumber(agent.getIdentificationNumber());
         return agentEntity;
     }

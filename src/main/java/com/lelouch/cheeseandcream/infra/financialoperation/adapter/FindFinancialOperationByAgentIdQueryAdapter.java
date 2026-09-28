@@ -5,7 +5,7 @@ import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOp
 import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationEntity;
-import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationRepository;
+import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

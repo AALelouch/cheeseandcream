@@ -42,8 +42,10 @@ public class FinancialOperation {
 
         if (total != null && total > 0) {
             switch (operationType) {
-                case SALE, PAYMENT -> agent.decreaseBalance(total);
-                case CLIENT_PAYMENT, PURCHASE -> agent.increaseBalance(total);
+                case SALE -> agent.increaseReceivables(total);
+                case PAYMENT -> agent.decreasePayables(total);
+                case CLIENT_PAYMENT -> agent.decreaseReceivables(total);
+                case PURCHASE -> agent.increasePayables(total);
                 default -> throw new BadRequestException("Invalid operation type: " + operationType);
             }
         }else {
@@ -75,8 +77,8 @@ public class FinancialOperation {
         this.total = operationProducts.stream().mapToDouble(FinancialOperation.OperationProduct::getTotalPrice).sum();
 
         switch (operationType) {
-            case PURCHASE -> agent.increaseBalance(total);
-            case SALE, PAYMENT -> agent.decreaseBalance(total);
+            case PURCHASE -> agent.increasePayables(total);
+            case SALE -> agent.increaseReceivables(total);
             default -> throw new BadRequestException("Invalid operation type: " + operationType);
         }
 
