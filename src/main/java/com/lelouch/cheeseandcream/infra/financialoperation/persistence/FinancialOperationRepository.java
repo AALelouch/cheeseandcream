@@ -1,6 +1,5 @@
-package com.lelouch.cheeseandcream.infra.financialoperation;
+package com.lelouch.cheeseandcream.infra.financialoperation.persistence;
 
-import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationEntity;
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

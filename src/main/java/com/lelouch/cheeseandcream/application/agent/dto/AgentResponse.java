@@ -6,7 +6,10 @@ public record AgentResponse(
     String email,
     String phoneNumber,
     String address,
-    Double balance,
+    String payables,
+    String receivables,
+    String balance,
+    String role,
     String identificationType,
     String identificationNumber
 ){

@@ -4,6 +4,7 @@ import com.lelouch.cheeseandcream.application.agent.AgentUseCase;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
+import com.lelouch.cheeseandcream.domain.Role;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,24 +44,24 @@ public class AgentRestController {
         return new ResponseEntity<>(agentUseCase.getAgent(id), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Iterable<AgentResponse>> getAllAgents(Pageable pageable) {
-        return new ResponseEntity<>(agentUseCase.getAllAgents(pageable), HttpStatus.OK);
+    @GetMapping("/clients")
+    public ResponseEntity<Iterable<AgentResponse>> getAllClient(Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.getAllAgents(pageable, Role.CLIENT), HttpStatus.OK);
     }
 
-    @GetMapping("/with-products")
-    public ResponseEntity<Iterable<AgentResponse>> getAgentsWithProducts(Pageable pageable) {
-        return new ResponseEntity<>(agentUseCase.getAgentsWithProducts(pageable), HttpStatus.OK);
+    @GetMapping("/providers")
+    public ResponseEntity<Iterable<AgentResponse>> getAllProviders(Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.getAllAgents(pageable, Role.PROVIDER), HttpStatus.OK);
     }
 
-    @PostMapping("/with-products/search")
-    public ResponseEntity<Iterable<AgentResponse>> getAgentsWithProductsByTerm(Pageable pageable, @RequestBody AgentTermRequest term) {
-        return new ResponseEntity<>(agentUseCase.getAgentsWithProductsByTerm(term, pageable), HttpStatus.OK);
+    @PostMapping("/search/clients")
+    public ResponseEntity<Iterable<AgentResponse>> searchClients(@RequestBody AgentTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.searchAgents(term, Role.CLIENT, pageable), HttpStatus.OK);
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<Iterable<AgentResponse>> searchAgents(@RequestBody AgentTermRequest term, Pageable pageable) {
-        return new ResponseEntity<>(agentUseCase.searchAgents(term, pageable), HttpStatus.OK);
+    @PostMapping("/search/providers")
+    public ResponseEntity<Iterable<AgentResponse>> searchProviders(@RequestBody AgentTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.searchAgents(term, Role.PROVIDER, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

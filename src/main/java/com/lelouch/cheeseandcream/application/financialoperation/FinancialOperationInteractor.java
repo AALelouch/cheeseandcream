@@ -16,6 +16,8 @@ import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,10 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "agents",  allEntries = true),
+            @CacheEvict(cacheNames = "agents-by-id", allEntries = true)
+    })
     public void addOperation(FinancialOperationRequest financialOperationRequest) {
 
 

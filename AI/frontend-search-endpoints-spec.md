@@ -1,5 +1,7 @@
 # Frontend specification: agent-scoped search
 
+> **Agent contract notice:** the endpoint and pagination guidance in this document remains valid, but the agent payload shown below has been superseded by `AI/frontend-agent-contract-rework-spec.md`. Agent requests, responses, forms, mocks, and UI labels must follow that specification.
+
 ## Goal
 
 Replace fixed, first-page lists in the Agent, Product, and Financial Operation interfaces with server-side, paginated search. Product and financial-operation searches are always scoped to the agent selected by the user.
@@ -51,7 +53,10 @@ Matching is case-insensitive and contains-based. An empty string returns the fir
       "email": "sales@northfarm.example",
       "phoneNumber": "5551234",
       "address": "Main Street",
-      "balance": 1250.0,
+      "payables": "250.0",
+      "receivables": "1500.0",
+      "balance": "1250.0",
+      "role": "PROVIDER",
       "identificationType": "2",
       "identificationNumber": "900123456"
     }

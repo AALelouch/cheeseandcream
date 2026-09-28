@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 class FinancialOperationTest {
 
     @Test
-    void saleWithProductsReducesInventoryAndCustomerBalanceUsingLineTotals() {
-        Agent agent = agentWithBalance(100.0);
+    void saleWithProductsReducesInventoryAndIncreasesCustomerReceivablesUsingLineTotals() {
+        Agent agent = clientWithReceivables(100.0);
         Product cheese = product(10L, 8.0, 15.0);
         Product cream = product(11L, 5.0, 8.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "Pedido", OperationType.SALE);
@@ -23,13 +23,15 @@ class FinancialOperationTest {
         assertEquals(54.0, operation.getTotal());
         assertEquals(6.0, cheese.getQuantity());
         assertEquals(2.0, cream.getQuantity());
-        assertEquals(46.0, agent.getBalance());
+        assertEquals(154.0, agent.getReceivables());
+        assertEquals(0.0, agent.getPayables());
+        assertEquals(154.0, agent.getBalance());
         assertEquals(2, operation.getOperationProducts().size());
     }
 
     @Test
-    void purchaseWithProductsIncreasesInventoryAndSupplierBalance() {
-        Agent agent = agentWithBalance(20.0);
+    void purchaseWithProductsIncreasesInventoryAndSupplierPayables() {
+        Agent agent = providerWithPayables(20.0);
         Product cheese = product(10L, 1.0, 9.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "Compra", OperationType.PURCHASE);
 
@@ -37,23 +39,44 @@ class FinancialOperationTest {
 
         assertEquals(5.0, cheese.getQuantity());
         assertEquals(36.0, operation.getTotal());
-        assertEquals(56.0, agent.getBalance());
+        assertEquals(56.0, agent.getPayables());
+        assertEquals(0.0, agent.getReceivables());
+        assertEquals(-56.0, agent.getBalance());
     }
 
     @Test
-    void singleAmountOperationsRejectZeroAndClientPaymentsIncreaseBalance() {
-        FinancialOperation zeroAmount = FinancialOperation.create(agentWithBalance(10.0), new ArrayList<>(), "", OperationType.SALE);
-        Agent agent = agentWithBalance(10.0);
+    void clientPaymentDecreasesReceivables() {
+        Agent agent = clientWithReceivables(10.0);
         FinancialOperation clientPayment = FinancialOperation.create(agent, new ArrayList<>(), "", OperationType.CLIENT_PAYMENT);
 
-        assertThrows(BadRequestException.class, () -> zeroAmount.performSingleAmountOperation(0.0));
         clientPayment.performSingleAmountOperation(5.0);
-        assertEquals(15.0, agent.getBalance());
+
+        assertEquals(5.0, agent.getReceivables());
+        assertEquals(5.0, agent.getBalance());
+    }
+
+    @Test
+    void supplierPaymentDecreasesPayables() {
+        Agent agent = providerWithPayables(10.0);
+        FinancialOperation payment = FinancialOperation.create(agent, new ArrayList<>(), "", OperationType.PAYMENT);
+
+        payment.performSingleAmountOperation(5.0);
+
+        assertEquals(5.0, agent.getPayables());
+        assertEquals(-5.0, agent.getBalance());
+    }
+
+    @Test
+    void singleAmountOperationRejectsZero() {
+        FinancialOperation operation = FinancialOperation.create(clientWithReceivables(10.0),
+                new ArrayList<>(), "", OperationType.SALE);
+
+        assertThrows(BadRequestException.class, () -> operation.performSingleAmountOperation(0.0));
     }
 
     @Test
     void rejectsProductOperationWhenAnyRequestedProductIsMissing() {
-        Agent agent = agentWithBalance(10.0);
+        Agent agent = clientWithReceivables(10.0);
         Product cheese = product(10L, 5.0, 9.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "", OperationType.SALE);
 
@@ -63,8 +86,14 @@ class FinancialOperationTest {
         assertEquals(10.0, agent.getBalance());
     }
 
-    private Agent agentWithBalance(double balance) {
-        return Agent.create(1L, "Cliente", "cliente@example.com", "1", "Calle", balance, "123");
+    private Agent clientWithReceivables(double receivables) {
+        return Agent.create(1L, "Cliente", "cliente@example.com", "1", "Calle",
+                receivables, 0.0, Role.CLIENT, "123", 1L);
+    }
+
+    private Agent providerWithPayables(double payables) {
+        return Agent.create(2L, "Proveedor", "provider@example.com", "2", "Avenida",
+                0.0, payables, Role.PROVIDER, "456", 2L);
     }
 
     private Product product(long id, double quantity, double price) {

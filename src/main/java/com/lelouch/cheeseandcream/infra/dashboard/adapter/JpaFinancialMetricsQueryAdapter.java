@@ -1,7 +1,7 @@
 package com.lelouch.cheeseandcream.infra.dashboard.adapter;
 
 import com.lelouch.cheeseandcream.application.dashboard.query.FinancialMetricsQuery;
-import com.lelouch.cheeseandcream.infra.financialoperation.FinancialOperationRepository;
+import com.lelouch.cheeseandcream.infra.financialoperation.persistence.FinancialOperationRepository;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
