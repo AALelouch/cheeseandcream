@@ -3,6 +3,7 @@ package com.lelouch.cheeseandcream.domain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.lelouch.cheeseandcream.domain.FinancialOperation.OperationProduct;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ class FinancialOperationTest {
     @Test
     void saleWithProductsReducesInventoryAndIncreasesCustomerReceivablesUsingLineTotals() {
         Agent agent = clientWithReceivables(100.0);
-        Product cheese = product(10L, 8.0, 15.0);
-        Product cream = product(11L, 5.0, 8.0);
+        Product cheese = product(10L, 8.0, 7.0);
+        Product cream = product(11L, 5.0, 4.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "Pedido", OperationType.SALE);
 
-        operation.performProductBasedOperation(List.of(cheese, cream), Map.of(10L, 2.0, 11L, 3.0));
+        operation.performProductBasedOperation(List.of(cheese, cream), Map.of(
+                10L, OperationProduct.create(2.0, 15.0),
+                11L, OperationProduct.create(3.0, 8.0)));
 
         assertEquals(54.0, operation.getTotal());
         assertEquals(6.0, cheese.getQuantity());
@@ -32,10 +35,11 @@ class FinancialOperationTest {
     @Test
     void purchaseWithProductsIncreasesInventoryAndSupplierPayables() {
         Agent agent = providerWithPayables(20.0);
-        Product cheese = product(10L, 1.0, 9.0);
+        Product cheese = product(10L, 1.0, 7.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "Compra", OperationType.PURCHASE);
 
-        operation.performProductBasedOperation(List.of(cheese), Map.of(10L, 4.0));
+        operation.performProductBasedOperation(List.of(cheese),
+                Map.of(10L, OperationProduct.create(4.0, 9.0)));
 
         assertEquals(5.0, cheese.getQuantity());
         assertEquals(36.0, operation.getTotal());
@@ -77,11 +81,13 @@ class FinancialOperationTest {
     @Test
     void rejectsProductOperationWhenAnyRequestedProductIsMissing() {
         Agent agent = clientWithReceivables(10.0);
-        Product cheese = product(10L, 5.0, 9.0);
+        Product cheese = product(10L, 5.0, 7.0);
         FinancialOperation operation = FinancialOperation.create(agent, new ArrayList<>(), "", OperationType.SALE);
 
-        assertThrows(BadRequestException.class,
-                () -> operation.performProductBasedOperation(List.of(cheese), Map.of(10L, 1.0, 99L, 1.0)));
+        assertThrows(BadRequestException.class, () -> operation.performProductBasedOperation(
+                List.of(cheese),
+                Map.of(10L, OperationProduct.create(1.0, 9.0),
+                        99L, OperationProduct.create(1.0, 12.0))));
         assertEquals(5.0, cheese.getQuantity());
         assertEquals(10.0, agent.getBalance());
     }
@@ -96,7 +102,7 @@ class FinancialOperationTest {
                 0.0, payables, Role.PROVIDER, "456", 2L);
     }
 
-    private Product product(long id, double quantity, double price) {
-        return Product.create(id, "Producto", quantity, price, price / 2, "unit", null);
+    private Product product(long id, double quantity, double cost) {
+        return Product.create(id, "Producto", quantity, cost, "unit", null);
     }
 }

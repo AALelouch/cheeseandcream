@@ -29,6 +29,6 @@ class ProductTest {
     }
 
     private Product productWithQuantity(double quantity) {
-        return Product.create(1L, "Queso", quantity, 12.0, 7.0, "unit", null);
+        return Product.create(1L, "Queso", quantity, 12.0, "unit", null);
     }
 }

@@ -104,7 +104,7 @@ public class ProductInteractor implements ProductUseCase {
                 .orElseThrow(() -> new NotFoundException("CategoryEntity not found"));
         Product.Agent agent = findProductAgentById.findAgentById(request.agendId())
                 .orElseThrow(() -> new NotFoundException("AgentEntity not found"));
-        return Product.create(productId, request.name(), request.quantity(), request.price(), request.cost(),
+        return Product.create(productId, request.name(), request.quantity(), request.cost(),
                 request.unitType(), category, agent);
     }
 }

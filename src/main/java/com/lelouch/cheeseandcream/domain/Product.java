@@ -5,7 +5,6 @@ public class Product {
     private Long id;
     private String name;
     private Double quantity = 0.0;
-    private Double price = 0.0;
     private Double cost = 0.0;
     private String unitType;
     private Category category;
@@ -14,16 +13,15 @@ public class Product {
     private Product() {
     }
 
-    public static Product create(Long id, String name, Double quantity, Double price, Double cost, String unitType, Category category) {
-        return create(id, name, quantity, price, cost, unitType, category, null);
+    public static Product create(Long id, String name, Double quantity, Double cost, String unitType, Category category) {
+        return create(id, name, quantity, cost, unitType, category, null);
     }
 
-    public static Product create(Long id, String name, Double quantity, Double price, Double cost, String unitType, Category category, Agent agent) {
+    public static Product create(Long id, String name, Double quantity, Double cost, String unitType, Category category, Agent agent) {
         Product product = new Product();
         product.id = id;
         product.name = name;
         product.quantity = quantity;
-        product.price = price;
         product.cost = cost;
         product.unitType = unitType;
         product.category = category;
@@ -103,10 +101,6 @@ public class Product {
 
     public Double getQuantity() {
         return quantity;
-    }
-
-    public Double getPrice() {
-        return price;
     }
 
     public Double getCost() {

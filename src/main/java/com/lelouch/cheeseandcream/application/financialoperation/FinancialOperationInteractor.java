@@ -10,10 +10,12 @@ import com.lelouch.cheeseandcream.application.financialoperation.query.FindProdu
 import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
+import com.lelouch.cheeseandcream.domain.OperationType;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.cache.annotation.CacheEvict;
@@ -52,8 +54,6 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
     })
     public void addOperation(FinancialOperationRequest financialOperationRequest) {
 
-
-
         Agent agent = findAgentByIdQuery.findById(financialOperationRequest.getIdAgent())
                 .orElseThrow(() -> new NotFoundException("AgentEntity not found with id: " + financialOperationRequest.getIdAgent()));
 
@@ -68,19 +68,36 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
 
         if (hasProducts) {
 
-            if (financialOperationRequest.getAmount() != 0) {
-                throw new BadRequestException("Amount must be 0 when products are provided");
-            }
-
             List<Long> productIds = financialOperationRequest.getProducts().keySet().stream().toList();
             List<Product> products = findProductsByIdQuery.findAllById(productIds);
 
-            financialOperation.performProductBasedOperation(products, financialOperationRequest.getProducts());
+            financialOperation.performProductBasedOperation(products, mapToOperationProducts(financialOperationRequest));
+
         }else{
             financialOperation.performSingleAmountOperation(financialOperationRequest.getAmount());
         }
 
         saveFinancialOperationCommand.save(financialOperation);
+
+        if (financialOperationRequest.getAmount() != 0 && hasProducts){
+
+            switch (financialOperationRequest.getOperationType()) {
+                case SALE -> {
+
+                    FinancialOperation supplyPayment = FinancialOperation.create(agent, new LinkedList<>(), financialOperationRequest.getConcept(), OperationType.CLIENT_PAYMENT);
+                    supplyPayment.performSingleAmountOperation(financialOperationRequest.getAmount());
+                    saveFinancialOperationCommand.save(supplyPayment);
+                }
+                case PURCHASE -> { 
+                    FinancialOperation supplyPayment = FinancialOperation.create(agent, new LinkedList<>(), financialOperationRequest.getConcept(), OperationType.PAYMENT);
+                    supplyPayment.performSingleAmountOperation(financialOperationRequest.getAmount());
+                    saveFinancialOperationCommand.save(supplyPayment);
+                }
+                default -> throw new BadRequestException("Invalid operation type for adding payment helper: " + financialOperationRequest.getOperationType());
+            }
+
+        }
+
     }
 
     @Override
@@ -93,5 +110,12 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
             Pageable pageable) {
         return financialOperationOutputPort.mapToResponse(
                 searchFinancialOperationsByTermQuery.searchByTerm(agentId, term, pageable));
+    }
+
+    private HashMap<Long, FinancialOperation.OperationProduct> mapToOperationProducts(FinancialOperationRequest financialOperationRequest) {
+        return financialOperationRequest.getProducts().entrySet().stream()
+                .collect(HashMap::new, (map, entry) ->
+                        map.put(entry.getKey(), FinancialOperation.OperationProduct.create(entry.getValue().getQuantity(), entry.getValue()
+                                .getPrice())), HashMap::putAll);
     }
 }
