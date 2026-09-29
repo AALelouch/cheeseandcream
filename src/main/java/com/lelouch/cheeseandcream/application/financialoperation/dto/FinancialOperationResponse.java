@@ -26,6 +26,7 @@ public class FinancialOperationResponse {
         private Long id;
         private String name;
         private Double quantity;
+        private Double price;
         private Double totalPrice;
     }
 }

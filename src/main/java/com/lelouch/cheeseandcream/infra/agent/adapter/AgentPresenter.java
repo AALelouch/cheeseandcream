@@ -12,7 +12,10 @@ public class AgentPresenter implements AgentOutputPort {
     @Override
     public AgentResponse mapToResponse(Agent agent) {
         return new AgentResponse(agent.getId(), agent.getName(), agent.getEmail(), agent.getPhoneNumber(),
-                agent.getAddress(), agent.getBalance(), String.valueOf(agent.getIdentificationTypeId()),
+                agent.getAddress(), agent.getPayables().toString(), agent.getReceivables().toString(),
+                agent.getBalance().toString(),
+                agent.getRole().toString(),
+                String.valueOf(agent.getIdentificationTypeId()),
                 agent.getIdentificationNumber());
     }
 

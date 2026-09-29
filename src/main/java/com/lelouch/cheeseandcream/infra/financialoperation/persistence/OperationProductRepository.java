@@ -1,6 +1,5 @@
-package com.lelouch.cheeseandcream.infra.financialoperation;
+package com.lelouch.cheeseandcream.infra.financialoperation.persistence;
 
-import com.lelouch.cheeseandcream.infra.financialoperation.persistence.OperationProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OperationProductRepository extends JpaRepository<OperationProductEntity, Long> {

@@ -2,13 +2,13 @@ package com.lelouch.cheeseandcream.application.financialoperation;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.lelouch.cheeseandcream.application.financialoperation.command.SaveFinancialOperationCommand;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest.ProductOperationRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.query.FindAgentByIdQuery;
@@ -16,8 +16,11 @@ import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFin
 import com.lelouch.cheeseandcream.domain.Agent;
 import com.lelouch.cheeseandcream.domain.FinancialOperation;
 import com.lelouch.cheeseandcream.domain.OperationType;
-import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
+import com.lelouch.cheeseandcream.domain.Product;
+import com.lelouch.cheeseandcream.domain.Role;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -28,8 +31,8 @@ import org.springframework.data.domain.Pageable;
 class FinancialOperationInteractorTest {
 
     @Test
-    void addSingleAmountSalePersistsTheOperationAndUpdatesTheAgentBalance() {
-        Agent agent = Agent.create(5L, "Cliente", "c@example.com", "1", "Calle", 100.0, "123");
+    void addSingleAmountSalePersistsTheOperationAndIncreasesReceivables() {
+        Agent agent = clientWithReceivables(100.0);
         FindAgentByIdQuery findAgent = id -> Optional.of(agent);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
         FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, findAgent, null, null, null, null);
@@ -37,24 +40,33 @@ class FinancialOperationInteractorTest {
 
         interactor.addOperation(request);
 
-        assertEquals(60.0, agent.getBalance());
+        assertEquals(140.0, agent.getReceivables());
+        assertEquals(140.0, agent.getBalance());
         assertEquals(40.0, saveCommand.saved.getTotal());
         assertEquals(OperationType.SALE, saveCommand.saved.getOperationType());
     }
 
     @Test
-    void addOperationRejectsAnAmountAlongsideProductsBeforePersisting() {
-        Agent agent = Agent.create(5L, "Cliente", "c@example.com", "1", "Calle", 100.0, "123");
+    void addSaleWithProductsAndAmountPersistsSaleAndClientPayment() {
+        Agent agent = clientWithReceivables(100.0);
+        Product product = Product.create(9L, "Queso", 5.0, 7.0, "unit", null);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
-        FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, id -> Optional.of(agent),
-                ids -> java.util.List.of(), null, null, null);
-        HashMap<Long, Double> products = new HashMap<>();
-        products.put(9L, 1.0);
-        FinancialOperationRequest request = new FinancialOperationRequest(products, 5L, 1.0, "Factura", OperationType.SALE);
+        FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand,
+                id -> Optional.of(agent), ids -> List.of(product), null, null, null);
+        HashMap<Long, ProductOperationRequest> products = new HashMap<>();
+        products.put(9L, new ProductOperationRequest(2.0, 15.0));
+        FinancialOperationRequest request = new FinancialOperationRequest(
+                products, 5L, 10.0, "Factura", OperationType.SALE);
 
-        assertThrows(BadRequestException.class, () -> interactor.addOperation(request));
-        assertEquals(null, saveCommand.saved);
-        assertEquals(100.0, agent.getBalance());
+        interactor.addOperation(request);
+
+        assertEquals(2, saveCommand.savedOperations.size());
+        assertEquals(OperationType.SALE, saveCommand.savedOperations.get(0).getOperationType());
+        assertEquals(30.0, saveCommand.savedOperations.get(0).getTotal());
+        assertEquals(OperationType.CLIENT_PAYMENT, saveCommand.savedOperations.get(1).getOperationType());
+        assertEquals(10.0, saveCommand.savedOperations.get(1).getTotal());
+        assertEquals(3.0, product.getQuantity());
+        assertEquals(120.0, agent.getReceivables());
     }
 
     @Test
@@ -76,12 +88,19 @@ class FinancialOperationInteractorTest {
         verify(query).searchByTerm(15L, term, pageable);
     }
 
+    private Agent clientWithReceivables(double receivables) {
+        return Agent.create(5L, "Cliente", "c@example.com", "1", "Calle",
+                receivables, 0.0, Role.CLIENT, "123", 1L);
+    }
+
     private static final class RecordingSaveCommand implements SaveFinancialOperationCommand {
         private FinancialOperation saved;
+        private final List<FinancialOperation> savedOperations = new ArrayList<>();
 
         @Override
         public void save(FinancialOperation financialOperation) {
             saved = financialOperation;
+            savedOperations.add(financialOperation);
         }
     }
 }

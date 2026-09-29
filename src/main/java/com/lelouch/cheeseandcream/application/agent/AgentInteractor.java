@@ -8,10 +8,9 @@ import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
 import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindActiveAgentsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.FindAgentByIdQuery;
-import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsByTermQuery;
-import com.lelouch.cheeseandcream.application.agent.query.FindAgentsWithProductsQuery;
 import com.lelouch.cheeseandcream.application.agent.query.SearchAgentsByTermQuery;
 import com.lelouch.cheeseandcream.domain.Agent;
+import com.lelouch.cheeseandcream.domain.Role;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,25 +28,20 @@ public class AgentInteractor implements AgentUseCase {
     private final DeactivateAgentCommand deactivateAgentCommand;
     private final FindAgentByIdQuery findAgentByIdQuery;
     private final FindActiveAgentsQuery findActiveAgentsQuery;
-    private final FindAgentsWithProductsQuery findAgentsWithProductsQuery;
     private final SearchAgentsByTermQuery searchAgentsByTermQuery;
     private final AgentExistsQuery agentExistsQuery;
-    private final FindAgentsWithProductsByTermQuery findAgentsWithProductsByTermQuery;
     private final AgentOutputPort agentOutputPort;
 
     public AgentInteractor(SaveAgentCommand saveAgentCommand, DeactivateAgentCommand deactivateAgentCommand,
             FindAgentByIdQuery findAgentByIdQuery, FindActiveAgentsQuery findActiveAgentsQuery,
-            FindAgentsWithProductsQuery findAgentsWithProductsQuery,
-            SearchAgentsByTermQuery searchAgentsByTermQuery, AgentExistsQuery agentExistsQuery, FindAgentsWithProductsByTermQuery findAgentsWithProductsByTermQuery,
+            SearchAgentsByTermQuery searchAgentsByTermQuery, AgentExistsQuery agentExistsQuery,
             AgentOutputPort agentOutputPort) {
         this.saveAgentCommand = saveAgentCommand;
         this.deactivateAgentCommand = deactivateAgentCommand;
         this.findAgentByIdQuery = findAgentByIdQuery;
         this.findActiveAgentsQuery = findActiveAgentsQuery;
-        this.findAgentsWithProductsQuery = findAgentsWithProductsQuery;
         this.searchAgentsByTermQuery = searchAgentsByTermQuery;
         this.agentExistsQuery = agentExistsQuery;
-        this.findAgentsWithProductsByTermQuery = findAgentsWithProductsByTermQuery;
         this.agentOutputPort = agentOutputPort;
     }
 
@@ -94,24 +88,14 @@ public class AgentInteractor implements AgentUseCase {
     }
 
     @Override
-    @Cacheable(cacheNames = "agents", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<AgentResponse> getAllAgents(Pageable pageable) {
-        return agentOutputPort.mapToResponse(findActiveAgentsQuery.findAll(pageable));
+    @Cacheable(cacheNames = "agents", key = "#role.name() + '-' +#pageable.pageNumber + '-' + #pageable.pageSize")
+    public Page<AgentResponse> getAllAgents(Pageable pageable, Role role) {
+        return agentOutputPort.mapToResponse(findActiveAgentsQuery.findAll(pageable, role));
     }
 
     @Override
-    public Page<AgentResponse> getAgentsWithProducts(Pageable pageable) {
-        return agentOutputPort.mapToResponse(findAgentsWithProductsQuery.findAgentsWithProducts(pageable));
-    }
-
-    @Override
-    public Page<AgentResponse> searchAgents(AgentTermRequest term, Pageable pageable) {
-        return agentOutputPort.mapToResponse(searchAgentsByTermQuery.searchByTerm(term, pageable));
-    }
-
-    @Override
-    public Page<AgentResponse> getAgentsWithProductsByTerm(AgentTermRequest term, Pageable pageable) {
-        return agentOutputPort.mapToResponse(findAgentsWithProductsByTermQuery.search(term, pageable));
+    public Page<AgentResponse> searchAgents(AgentTermRequest term, Role role, Pageable pageable) {
+        return agentOutputPort.mapToResponse(searchAgentsByTermQuery.searchByTerm(term, role, pageable));
     }
 
     private void validateUniqueData(AgentRequest request, Long agentId) {
@@ -124,13 +108,9 @@ public class AgentInteractor implements AgentUseCase {
     }
 
     private Agent toDomain(Long id, AgentRequest request) {
-        double balance;
-        try {
-            balance = Double.parseDouble(request.balance());
-        } catch (NumberFormatException exception) {
-            throw new BadRequestException("Agent balance must be a valid number");
-        }
-        return Agent.create(id, request.name(), request.email(), request.phoneNumber(), request.address(), balance,
+
+        return Agent.create(id, request.name(), request.email(), request.phoneNumber()
+                , request.address(), request.receivables(), request.payables(), request.role(),
                 request.identificationNumber(), request.identificationTypeId());
     }
 }
