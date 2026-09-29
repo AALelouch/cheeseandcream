@@ -37,7 +37,6 @@ public class ProductEntity {
     @Column(unique = true)
     private String name;
     private Double quantity = 0.0;
-    private Double price = 0.0;
     private Double cost = 0.0;
     private String unitType;
     private boolean active = true;
@@ -68,7 +67,7 @@ public class ProductEntity {
 
     public Product toDomain() {
 
-        return Product.create(this.id, this.name, this.quantity, this.price, this.cost, this.unitType,
+        return Product.create(this.id, this.name, this.quantity, this.cost, this.unitType,
                 Product.Category.create(this.categoryEntity.getId(), this.categoryEntity.getName()),
                 Product.Agent.create(this.agentEntity.getId(), this.agentEntity.getName()));
     }
@@ -78,7 +77,6 @@ public class ProductEntity {
         productEntity.setId(product.getId());
         productEntity.setName(product.getName());
         productEntity.setQuantity(product.getQuantity());
-        productEntity.setPrice(product.getPrice());
         productEntity.setCost(product.getCost());
         productEntity.setUnitType(product.getUnitType());
         CategoryEntity categoryEntity = new CategoryEntity();

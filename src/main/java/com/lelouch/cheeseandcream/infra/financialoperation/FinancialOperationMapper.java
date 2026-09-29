@@ -19,6 +19,7 @@ public interface FinancialOperationMapper {
     @Mapping(target = "id", source = "product.id")
     @Mapping(target = "name", source = "product.name")
     @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "price", source = "price")
     @Mapping(target = "totalPrice", source = "totalPrice")
     FinancialOperationResponse.ProductResponse toProductResponse(FinancialOperation.OperationProduct operationProduct);
 

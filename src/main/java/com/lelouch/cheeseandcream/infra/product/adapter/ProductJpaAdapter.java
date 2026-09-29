@@ -91,7 +91,6 @@ public class ProductJpaAdapter implements FindProductByIdQuery, FindProductsByAg
 
         entity.setName(product.getName());
         entity.setQuantity(product.getQuantity());
-        entity.setPrice(product.getPrice());
         entity.setCost(product.getCost());
         entity.setUnitType(product.getUnitType());
         entity.setCategoryEntity(category);
