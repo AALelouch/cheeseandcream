@@ -42,7 +42,21 @@ public class CacheConfig {
                         .maximumSize(6)
                         .build());
 
-        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, agentsById, categoriesCache));
+        CaffeineCache operatingCostCache = new CaffeineCache("operatingCost",
+                Caffeine.newBuilder()
+                        .expireAfterWrite(60, TimeUnit.MINUTES)
+                        .maximumSize(20)
+                        .build());
+
+        CaffeineCache operatingCostMonthCache = new CaffeineCache("operatingCostMonth",
+                Caffeine.newBuilder()
+                        .expireAfterWrite(60, TimeUnit.MINUTES)
+                        .maximumSize(20)
+                        .build());
+
+
+
+        cacheManager.setCaches(Arrays.asList(agentsCache, identificationTypesCache, agentsById, categoriesCache, operatingCostCache, operatingCostMonthCache));
         return cacheManager;
     }
 
