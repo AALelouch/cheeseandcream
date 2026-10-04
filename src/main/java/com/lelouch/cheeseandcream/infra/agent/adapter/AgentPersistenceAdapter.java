@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.infra.agent.adapter;
 
+import com.lelouch.cheeseandcream.application.agent.dto.AgentIdNameResponse;
 import com.lelouch.cheeseandcream.application.agent.query.AgentExistsQuery;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
 import com.lelouch.cheeseandcream.application.agent.command.DeactivateAgentCommand;
@@ -17,6 +18,7 @@ import com.lelouch.cheeseandcream.infra.identificationtype.persistence.Identific
 import com.lelouch.cheeseandcream.infra.identificationtype.persistence.IdentificationTypeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,6 +71,11 @@ public class AgentPersistenceAdapter implements SaveAgentCommand, DeactivateAgen
     @Override
     public Page<Agent> searchByTerm(AgentTermRequest term, Role role, Pageable pageable) {
         return agentRepository.searchByTerm(term.term(), role, pageable).map(AgentEntity::toDomain);
+    }
+
+    @Override
+    public Page<AgentIdNameResponse> searchByTermIdName(AgentTermRequest term, Role role, Pageable pageable) {
+        return agentRepository.searchByTermIdName(term.term(), role, pageable).map(projection -> new AgentIdNameResponse(projection.getId(), projection.getName()));
     }
 
     @Override

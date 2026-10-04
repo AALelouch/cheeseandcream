@@ -1,10 +1,12 @@
 package com.lelouch.cheeseandcream.application.financialoperation;
 
 import com.lelouch.cheeseandcream.application.financialoperation.command.SaveFinancialOperationCommand;
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationDetailsResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.query.FindAgentByIdQuery;
+import com.lelouch.cheeseandcream.application.financialoperation.query.FindDetailsQuery;
 import com.lelouch.cheeseandcream.application.financialoperation.query.FindFinancialOperationByAgentIdQuery;
 import com.lelouch.cheeseandcream.application.financialoperation.query.FindProductsByIdQuery;
 import com.lelouch.cheeseandcream.application.financialoperation.query.SearchFinancialOperationsByTermQuery;
@@ -14,7 +16,6 @@ import com.lelouch.cheeseandcream.domain.OperationType;
 import com.lelouch.cheeseandcream.domain.Product;
 import com.lelouch.cheeseandcream.domain.exception.BadRequestException;
 import com.lelouch.cheeseandcream.domain.exception.NotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FinancialOperationInteractor implements FinancialOperationUseCase {
@@ -32,17 +34,20 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
     private final SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery;
     private final FindAgentByIdQuery findAgentByIdQuery;
     private final FindProductsByIdQuery findProductsByIdQuery;
+    private final FindDetailsQuery findDetailsQuery;
     private final FinancialOperationOutputPort financialOperationOutputPort;
 
     public FinancialOperationInteractor(SaveFinancialOperationCommand saveFinancialOperationCommand, FindAgentByIdQuery findAgentByIdQuery,
             FindProductsByIdQuery findProductsByIdQuery, FindFinancialOperationByAgentIdQuery findFinancialOperationByAgentIdQuery,
             SearchFinancialOperationsByTermQuery searchFinancialOperationsByTermQuery,
+            FindDetailsQuery findDetailsQuery,
             FinancialOperationOutputPort financialOperationOutputPort) {
         this.saveFinancialOperationCommand = saveFinancialOperationCommand;
         this.findAgentByIdQuery = findAgentByIdQuery;
         this.findProductsByIdQuery = findProductsByIdQuery;
         this.findFinancialOperationByAgentIdQuery = findFinancialOperationByAgentIdQuery;
         this.searchFinancialOperationsByTermQuery = searchFinancialOperationsByTermQuery;
+        this.findDetailsQuery = findDetailsQuery;
         this.financialOperationOutputPort = financialOperationOutputPort;
     }
 
@@ -101,15 +106,24 @@ public class FinancialOperationInteractor implements FinancialOperationUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FinancialOperationResponse> getOperationsByAgentId(Long idAgent, Pageable pageable) {
         return financialOperationOutputPort.mapToResponse(findFinancialOperationByAgentIdQuery.findByAgentId(idAgent, pageable));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FinancialOperationResponse> searchOperations(Long agentId, FinancialOperationTermRequest term,
             Pageable pageable) {
         return financialOperationOutputPort.mapToResponse(
                 searchFinancialOperationsByTermQuery.searchByTerm(agentId, term, pageable));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public FinancialOperationDetailsResponse getOperationDetails(Long id) {
+
+        return new FinancialOperationDetailsResponse(findDetailsQuery.findDetailsById(id));
     }
 
     private HashMap<Long, FinancialOperation.OperationProduct> mapToOperationProducts(FinancialOperationRequest financialOperationRequest) {

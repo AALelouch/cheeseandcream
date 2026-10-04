@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.application.financialoperation;
 
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationDetailsResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
@@ -10,8 +11,8 @@ public interface FinancialOperationUseCase {
 
     void addOperation(FinancialOperationRequest financialOperationRequest);
     Page<FinancialOperationResponse> getOperationsByAgentId(Long idAgent, Pageable pageable);
-    Page<FinancialOperationResponse> searchOperations(Long agentId, FinancialOperationTermRequest term,
-            Pageable pageable);
+    Page<FinancialOperationResponse> searchOperations(Long agentId, FinancialOperationTermRequest term, Pageable pageable);
+    FinancialOperationDetailsResponse getOperationDetails(Long id);
 
 
 }

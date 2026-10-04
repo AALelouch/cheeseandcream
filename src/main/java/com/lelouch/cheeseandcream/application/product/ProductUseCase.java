@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.application.product;
 
+import com.lelouch.cheeseandcream.application.product.dto.ProductIdNameResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductRequest;
 import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
@@ -12,6 +13,7 @@ public interface ProductUseCase {
     ProductResponse getProductById(Long productId);
     Page<ProductResponse> getProductsByAgentId(Long agentId, Pageable pageable);
     Page<ProductResponse> searchProducts(Long agentId, ProductTermRequest term, Pageable pageable);
+    Page<ProductIdNameResponse> searchProductsIdName(Long agentId, ProductTermRequest term, Pageable pageable);
     void updateProduct(Long productId, ProductRequest productRequest);
     void deleteProduct(Long productId);
 }

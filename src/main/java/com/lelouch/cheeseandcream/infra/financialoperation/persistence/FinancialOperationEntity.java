@@ -70,11 +70,8 @@ public class FinancialOperationEntity {
     }
 
     public FinancialOperation toDomain() {
-        List<FinancialOperation.OperationProduct> operationProducts = products.stream()
-                .map(OperationProductEntity::toDomain)
-                .toList();
 
-        return FinancialOperation.create(agentEntity.toDomain(), operationProducts, concept, operationType, total, id, creationDate);
+        return FinancialOperation.create(agentEntity.toDomain(), concept, operationType, total, id, creationDate);
     }
 
 }

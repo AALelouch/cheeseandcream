@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 public class FinancialOperation {
 
     private Long id;
-    private Agent agent;
-    private List<OperationProduct> operationProducts;
-
     private Double total = 0.0;
     private String concept;
-    private OperationType operationType;
     private LocalDateTime creationDate;
+
+    private OperationType operationType;
+    private Agent agent;
+    private List<OperationProduct> operationProducts;
 
     private FinancialOperation() {
     }
@@ -29,8 +29,8 @@ public class FinancialOperation {
         return operation;
     }
 
-    public static FinancialOperation create(Agent agent, List<OperationProduct> operationProducts, String concept, OperationType operationType, Double total, Long id, LocalDateTime creationDate) {
-        FinancialOperation operation = create(agent, operationProducts, concept, operationType);
+    public static FinancialOperation create(Agent agent, String concept, OperationType operationType, Double total, Long id, LocalDateTime creationDate) {
+        FinancialOperation operation = create(agent, null, concept, operationType);
         operation.total = total;
         operation.id = id;
         operation.creationDate = creationDate;
@@ -77,7 +77,7 @@ public class FinancialOperation {
                 default -> throw new BadRequestException("Invalid operation type for changing inventory products at : " + operationType);
             }
 
-
+            operationProduct.calculateTotalPrice();
             operationProduct.linkProduct(product);
             this.operationProducts.add(operationProduct);
 
@@ -123,6 +123,7 @@ public class FinancialOperation {
 
     public final static class OperationProduct {
 
+        private String name;
         private Double quantity = 0.0;
         private Double totalPrice= 0.0;
         private Double price = 0.0;
@@ -134,15 +135,18 @@ public class FinancialOperation {
         public static OperationProduct create(Double quantity, Double price) {
             OperationProduct operationProduct = new OperationProduct();
             operationProduct.quantity = quantity;
-            operationProduct.totalPrice = quantity * price;
             operationProduct.price = price;
             return operationProduct;
         }
 
-        public static OperationProduct create(Double quantity, Double price, Product product) {
+        public static OperationProduct create(Double quantity, Double price, String name) {
             OperationProduct operationProduct = create(quantity, price);
-            operationProduct.product = product;
+            operationProduct.name = name;
             return operationProduct;
+        }
+
+        public void calculateTotalPrice() {
+            this.totalPrice = this.quantity * this.price;
         }
 
         public Double getQuantity() {
@@ -161,7 +165,12 @@ public class FinancialOperation {
             return price;
         }
 
+        public String getName() {
+            return name;
+        }
+
         private void linkProduct(Product product) {
+            this.name = product.getName();
             this.product = product;
         }
 

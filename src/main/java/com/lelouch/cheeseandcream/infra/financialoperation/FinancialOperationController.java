@@ -1,5 +1,6 @@
 package com.lelouch.cheeseandcream.infra.financialoperation;
 
+import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationDetailsResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationRequest;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationResponse;
 import com.lelouch.cheeseandcream.application.financialoperation.dto.FinancialOperationTermRequest;
@@ -39,6 +40,11 @@ public class FinancialOperationController {
     public ResponseEntity<Iterable<FinancialOperationResponse>> searchFinancialOperations(@PathVariable Long idAgent,
             @RequestBody FinancialOperationTermRequest term, Pageable pageable) {
         return ResponseEntity.ok(financialOperationUseCase.searchOperations(idAgent, term, pageable));
+    }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<FinancialOperationDetailsResponse> searchFinancialOperationDetails(@PathVariable Long id) {
+        return ResponseEntity.ok(financialOperationUseCase.getOperationDetails(id));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.lelouch.cheeseandcream.infra.agent.persistence;
 
 import com.lelouch.cheeseandcream.domain.Role;
+import com.lelouch.cheeseandcream.infra.agent.persistence.projection.AgentIdNameProjection;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,14 +65,12 @@ public interface AgentRepository extends JpaRepository<AgentEntity, Long>, JpaSp
     Page<AgentEntity> searchByTerm(@Param("term") String term, @Param("role") Role role, Pageable pageable);
 
     @Query("""
-    SELECT a FROM AgentEntity a\s
-    WHERE a.active = true AND a.role = :role \s
+    SELECT a.id as id, a.name as name FROM AgentEntity a\s
+    WHERE a.active = true and a.role = :role\s
       AND (LOWER(a.name) LIKE LOWER(CONCAT('%', :term, '%'))
-       OR LOWER(a.email) LIKE LOWER(CONCAT('%', :term, '%'))
-       OR LOWER(a.address) LIKE LOWER(CONCAT('%', :term, '%'))
-       OR LOWER(a.identificationNumber) LIKE LOWER(CONCAT('%', :term, '%')))
+)
 """)
-    Page<AgentEntity> findActiveProvidersByTerm(@Param("term") String term, @Param("role") Role role, Pageable pageable);
+    Page<AgentIdNameProjection> searchByTermIdName(@Param("term") String term, @Param("role") Role role, Pageable pageable);
 }
 
 
