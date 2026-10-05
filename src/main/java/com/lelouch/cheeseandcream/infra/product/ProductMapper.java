@@ -9,6 +9,5 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
 
     @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "agentName", source = "agent.name")
     ProductResponse toResponse(Product product);
 }

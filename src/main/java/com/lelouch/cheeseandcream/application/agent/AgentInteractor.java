@@ -2,6 +2,7 @@ package com.lelouch.cheeseandcream.application.agent;
 
 import com.lelouch.cheeseandcream.application.agent.command.DeactivateAgentCommand;
 import com.lelouch.cheeseandcream.application.agent.command.SaveAgentCommand;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentIdNameResponse;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
@@ -81,6 +82,7 @@ public class AgentInteractor implements AgentUseCase {
 
     @Override
     @Cacheable(cacheNames = "agents-by-id", key = "#agentId")
+    @Transactional(readOnly = true)
     public AgentResponse getAgent(Long agentId) {
         return findAgentByIdQuery.findById(agentId)
                 .map(agentOutputPort::mapToResponse)
@@ -89,13 +91,21 @@ public class AgentInteractor implements AgentUseCase {
 
     @Override
     @Cacheable(cacheNames = "agents", key = "#role.name() + '-' +#pageable.pageNumber + '-' + #pageable.pageSize")
+    @Transactional(readOnly = true)
     public Page<AgentResponse> getAllAgents(Pageable pageable, Role role) {
         return agentOutputPort.mapToResponse(findActiveAgentsQuery.findAll(pageable, role));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<AgentResponse> searchAgents(AgentTermRequest term, Role role, Pageable pageable) {
         return agentOutputPort.mapToResponse(searchAgentsByTermQuery.searchByTerm(term, role, pageable));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AgentIdNameResponse> searchAgentIdNameResponse(AgentTermRequest term, Role role, Pageable pageable) {
+        return searchAgentsByTermQuery.searchByTermIdName(term, role, pageable);
     }
 
     private void validateUniqueData(AgentRequest request, Long agentId) {

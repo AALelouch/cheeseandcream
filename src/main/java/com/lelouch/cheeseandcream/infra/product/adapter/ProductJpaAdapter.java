@@ -1,6 +1,8 @@
 package com.lelouch.cheeseandcream.infra.product.adapter;
 
 import com.lelouch.cheeseandcream.application.product.command.DeactivateProductCommand;
+import com.lelouch.cheeseandcream.application.product.dto.ProductIdNameResponse;
+import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.application.product.query.ExistsProductWithNameQuery;
 import com.lelouch.cheeseandcream.application.product.query.FindProductAgentById;
 import com.lelouch.cheeseandcream.application.product.query.FindProductByIdQuery;
@@ -44,13 +46,32 @@ public class ProductJpaAdapter implements FindProductByIdQuery, FindProductsByAg
     }
 
     @Override
-    public Page<Product> findByAgentId(Long agentId, Pageable pageable) {
-        return productRepository.findByAgentEntityIdAndActiveIsTrue(agentId, pageable).map(ProductEntity::toDomain);
+    public Page<ProductResponse> findByAgentId(Long agentId, Pageable pageable) {
+        return productRepository.findAllByAgentId(agentId, pageable).map(productFullProjection -> new ProductResponse(
+                productFullProjection.getId(),
+                productFullProjection.getName(),
+                productFullProjection.getQuantity(),
+                productFullProjection.getCost(),
+                productFullProjection.getUnitType(),
+                productFullProjection.getCategoryName()
+        ));
     }
 
     @Override
-    public Page<Product> searchByTerm(Long agentId, ProductTermRequest term, Pageable pageable) {
-        return productRepository.searchByAgentIdAndName(agentId, term.term(), pageable).map(ProductEntity::toDomain);
+    public Page<ProductResponse> searchByTerm(Long agentId, ProductTermRequest term, Pageable pageable) {
+        return productRepository.searchByAgentIdAndName(agentId, term.term(), pageable).map(productFullProjection -> new ProductResponse(
+                productFullProjection.getId(),
+                productFullProjection.getName(),
+                productFullProjection.getQuantity(),
+                productFullProjection.getCost(),
+                productFullProjection.getUnitType(),
+                productFullProjection.getCategoryName()));
+    }
+
+    @Override
+    public Page<ProductIdNameResponse> searchByTermIdName(Long agentId, ProductTermRequest term, Pageable pageable) {
+        return productRepository.searchByAgentIdAndNameAndReturnIdName(agentId, term.term(), pageable)
+                .map(projection -> new ProductIdNameResponse(projection.getId(), projection.getName(), projection.getQuantity()));
     }
 
     @Override

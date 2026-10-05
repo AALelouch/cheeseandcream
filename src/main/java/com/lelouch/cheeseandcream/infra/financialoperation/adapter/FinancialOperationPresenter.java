@@ -20,5 +20,4 @@ public class FinancialOperationPresenter implements FinancialOperationOutputPort
     public Page<FinancialOperationResponse> mapToResponse(Page<FinancialOperation> financialOperations) {
         return financialOperations.map(financialOperationMapper::toResponse);
     }
-
 }

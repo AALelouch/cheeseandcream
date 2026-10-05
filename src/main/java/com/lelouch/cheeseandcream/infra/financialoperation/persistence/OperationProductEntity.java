@@ -31,6 +31,8 @@ public class OperationProductEntity {
 
     private Double quantity;
     private Double totalPrice;
+    private Double price;
+    private String productName;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,14 +42,6 @@ public class OperationProductEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity productEntity;
-
-    public FinancialOperation.OperationProduct toDomain() {
-        return FinancialOperation.OperationProduct.create(
-                this.quantity,
-                this.totalPrice,
-                this.productEntity.toDomain()
-        );
-    }
 
 }
 

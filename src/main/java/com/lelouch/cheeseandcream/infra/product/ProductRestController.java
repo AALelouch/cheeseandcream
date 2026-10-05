@@ -1,6 +1,7 @@
 package com.lelouch.cheeseandcream.infra.product;
 
 import com.lelouch.cheeseandcream.application.product.ProductUseCase;
+import com.lelouch.cheeseandcream.application.product.dto.ProductIdNameResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductRequest;
 import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
@@ -52,6 +53,12 @@ public class ProductRestController {
     public ResponseEntity<Iterable<ProductResponse>> searchProducts(@PathVariable Long agentId,
             @RequestBody ProductTermRequest term, Pageable pageable) {
         return new ResponseEntity<>(productUseCase.searchProducts(agentId, term, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/agent/{agentId}/search/id-name")
+    public ResponseEntity<Iterable<ProductIdNameResponse>> searchProductsIdName(@PathVariable Long agentId
+            , @RequestBody ProductTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(productUseCase.searchProductsIdName(agentId, term, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

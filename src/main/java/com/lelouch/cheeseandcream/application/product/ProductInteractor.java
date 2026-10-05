@@ -2,6 +2,7 @@ package com.lelouch.cheeseandcream.application.product;
 
 import com.lelouch.cheeseandcream.application.product.command.DeactivateProductCommand;
 import com.lelouch.cheeseandcream.application.product.command.SaveProductCommand;
+import com.lelouch.cheeseandcream.application.product.dto.ProductIdNameResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductRequest;
 import com.lelouch.cheeseandcream.application.product.dto.ProductResponse;
 import com.lelouch.cheeseandcream.application.product.dto.ProductTermRequest;
@@ -69,13 +70,19 @@ public class ProductInteractor implements ProductUseCase {
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> getProductsByAgentId(Long agentId, Pageable pageable) {
-        return productOutputPort.mapToResponse(findProductsByAgentIdQuery.findByAgentId(agentId, pageable));
+        return findProductsByAgentIdQuery.findByAgentId(agentId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponse> searchProducts(Long agentId, ProductTermRequest term, Pageable pageable) {
-        return productOutputPort.mapToResponse(searchProductsByTermQuery.searchByTerm(agentId, term, pageable));
+        return searchProductsByTermQuery.searchByTerm(agentId, term, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductIdNameResponse> searchProductsIdName(Long agentId, ProductTermRequest term, Pageable pageable) {
+        return searchProductsByTermQuery.searchByTermIdName(agentId, term, pageable);
     }
 
     @Override

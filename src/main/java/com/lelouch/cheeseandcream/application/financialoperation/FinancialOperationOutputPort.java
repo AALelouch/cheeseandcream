@@ -7,5 +7,4 @@ import org.springframework.data.domain.Page;
 public interface FinancialOperationOutputPort {
 
     Page<FinancialOperationResponse> mapToResponse(Page<FinancialOperation> financialOperations);
-
 }

@@ -66,6 +66,8 @@ public class SaveFinancialOperationAdapter implements SaveFinancialOperationComm
             lineEntity.setProductEntity(managedProduct);
             lineEntity.setQuantity(line.getQuantity());
             lineEntity.setTotalPrice(line.getTotalPrice());
+            lineEntity.setProductName(line.getProduct().getName());
+            lineEntity.setPrice(line.getPrice());
 
             entity.addProduct(lineEntity);
         }

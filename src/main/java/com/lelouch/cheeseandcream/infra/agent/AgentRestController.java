@@ -1,6 +1,7 @@
 package com.lelouch.cheeseandcream.infra.agent;
 
 import com.lelouch.cheeseandcream.application.agent.AgentUseCase;
+import com.lelouch.cheeseandcream.application.agent.dto.AgentIdNameResponse;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentRequest;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentResponse;
 import com.lelouch.cheeseandcream.application.agent.dto.AgentTermRequest;
@@ -62,6 +63,16 @@ public class AgentRestController {
     @PostMapping("/search/providers")
     public ResponseEntity<Iterable<AgentResponse>> searchProviders(@RequestBody AgentTermRequest term, Pageable pageable) {
         return new ResponseEntity<>(agentUseCase.searchAgents(term, Role.PROVIDER, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/search/id-name/providers")
+    public ResponseEntity<Iterable<AgentIdNameResponse>> searchProvidersIdName(@RequestBody AgentTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.searchAgentIdNameResponse(term, Role.PROVIDER, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/search/id-name/clients")
+    public ResponseEntity<Iterable<AgentIdNameResponse>> searchClientsIdName(@RequestBody AgentTermRequest term, Pageable pageable) {
+        return new ResponseEntity<>(agentUseCase.searchAgentIdNameResponse(term, Role.CLIENT, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

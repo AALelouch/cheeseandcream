@@ -35,7 +35,7 @@ class FinancialOperationInteractorTest {
         Agent agent = clientWithReceivables(100.0);
         FindAgentByIdQuery findAgent = id -> Optional.of(agent);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
-        FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, findAgent, null, null, null, null);
+        FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand, findAgent, null, null, null, null, null);
         FinancialOperationRequest request = new FinancialOperationRequest(new HashMap<>(), 5L, 40.0, "Factura", OperationType.SALE);
 
         interactor.addOperation(request);
@@ -52,7 +52,7 @@ class FinancialOperationInteractorTest {
         Product product = Product.create(9L, "Queso", 5.0, 7.0, "unit", null);
         RecordingSaveCommand saveCommand = new RecordingSaveCommand();
         FinancialOperationInteractor interactor = new FinancialOperationInteractor(saveCommand,
-                id -> Optional.of(agent), ids -> List.of(product), null, null, null);
+                id -> Optional.of(agent), ids -> List.of(product), null, null, null, null);
         HashMap<Long, ProductOperationRequest> products = new HashMap<>();
         products.put(9L, new ProductOperationRequest(2.0, 15.0));
         FinancialOperationRequest request = new FinancialOperationRequest(
@@ -79,7 +79,7 @@ class FinancialOperationInteractorTest {
         Page<FinancialOperationResponse> responses = new PageImpl<>(java.util.List.of());
         when(query.searchByTerm(15L, term, pageable)).thenReturn(operations);
         when(outputPort.mapToResponse(operations)).thenReturn(responses);
-        FinancialOperationInteractor interactor = new FinancialOperationInteractor(null, null, null, null, query,
+        FinancialOperationInteractor interactor = new FinancialOperationInteractor(null, null, null, null, query, null,
                 outputPort);
 
         Page<FinancialOperationResponse> result = interactor.searchOperations(15L, term, pageable);

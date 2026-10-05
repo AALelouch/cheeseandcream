@@ -11,12 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FindFinancialOperationByAgentIdQueryAdapter implements FindFinancialOperationByAgentIdQuery,
+public class JpaFindFinancialOperationByAgentIdQueryAdapter implements FindFinancialOperationByAgentIdQuery,
         SearchFinancialOperationsByTermQuery {
 
     private final FinancialOperationRepository financialOperationRepository;
 
-    public FindFinancialOperationByAgentIdQueryAdapter(FinancialOperationRepository financialOperationRepository) {
+    public JpaFindFinancialOperationByAgentIdQueryAdapter(FinancialOperationRepository financialOperationRepository) {
         this.financialOperationRepository = financialOperationRepository;
     }
 
